@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:web/models/post_model.dart';
 import 'package:web/widgets/profile_avatar.dart';
@@ -14,8 +15,30 @@ class PostContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       color: Colors.white,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [_PostHeader(post: post)],
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _PostHeader(post: post),
+                const SizedBox(height: 4.0),
+                Text(post.caption),
+                post.imageUrl != null
+                    ? const SizedBox.shrink()
+                    : const SizedBox(
+                        height: 6.0,
+                      ),
+              ],
+            ),
+          ),
+          post.imageUrl != null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: CachedNetworkImage(imageUrl: post.imageUrl),
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }
