@@ -31,7 +31,9 @@ class _PostHeader extends StatelessWidget {
     return Row(
       children: [
         ProfileAvatar(imageUrl: post.user.imageUrl),
-        const SizedBox(width: 8.0,),
+        const SizedBox(
+          width: 8.0,
+        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +41,7 @@ class _PostHeader extends StatelessWidget {
               Text(
                 post.user.name,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Row(
@@ -59,7 +61,7 @@ class _PostHeader extends StatelessWidget {
           ),
         ),
         IconButton(
-         icon: const Icon( Icons.more_horiz),
+          icon: const Icon(Icons.more_horiz),
           onPressed: () => print('More'),
         )
       ],
