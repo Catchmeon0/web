@@ -31,27 +31,37 @@ class _PostHeader extends StatelessWidget {
     return Row(
       children: [
         ProfileAvatar(imageUrl: post.user.imageUrl),
-        const SizedBox(
-          width: 8.0,
-        ),
-        Column(
-          children: [
-            Text(post.user.name),
-            Row(
-              children: [
-                Text(
-                  '${post.timeAgo}',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12.0),
+        const SizedBox(width: 8.0,),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                post.user.name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
                 ),
-                Icon(
-                  Icons.public,
-                  color: Colors.grey[600],
-                  size: 12.0,
-                ),
-              ],
-            )
-          ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    '${post.timeAgo}',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12.0),
+                  ),
+                  Icon(
+                    Icons.public,
+                    color: Colors.grey[600],
+                    size: 12.0,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
+        IconButton(
+         icon: const Icon( Icons.more_horiz),
+          onPressed: () => print('More'),
+        )
       ],
     );
   }
