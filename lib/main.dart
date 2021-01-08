@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/screens/screens.dart';
-
 
 void main() {
   runApp(MyApp());

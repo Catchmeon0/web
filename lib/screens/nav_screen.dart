@@ -8,34 +8,30 @@ class NavScreen extends StatefulWidget {
   _NavScreenState createState() => _NavScreenState();
 }
 
-
-class _NavScreenState  extends State<NavScreen> {
+class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
     Scaffold(),
-   // Scaffold(),
-
+    // Scaffold(),
   ];
   final List<IconData> _icons = const [
     Icons.home,
     MdiIcons.accountCircleOutline,
-   // Icons.settings,
-
+    // Icons.settings,
   ];
-  int _selectedIndex=0;
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _icons.length,
+        length: _icons.length,
         child: Scaffold(
           body: _screens[_selectedIndex],
           bottomNavigationBar: CustomTabBar(
-            icons : _icons,
-            selectedIndex : _selectedIndex,
+            icons: _icons,
+            selectedIndex: _selectedIndex,
             onTap: (index) => setState(() => _selectedIndex = index),
           ),
         ));
   }
-
-
 }
