@@ -10,67 +10,87 @@ import 'package:web/widgets/widgets.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            brightness: Brightness.light,
-            backgroundColor: Colors.white,
-            title: Text(
-              "CatchMeOn",
-              style: const TextStyle(
-                color: Palette.catchMeOn_logo_Color,
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -1.2,
-              ),
-            ),
-            centerTitle: false,
-            floating: true,
-            //avatar Image
-            leading: new Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () => print("Avatar"),
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage(currentUser.imageUrl),
-                ),
-              ),
-            ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Responsive(
+          mobile: _HomeScreenMobile(),
+          desktop: _HomeScreenDesktop(),
 
-            actions: [
-              CircleButton(
-                icon: Icons.search,
-                iconSize: 30.0,
-                onPressed: () => print('search'),
-              ),
-              CircleButton(
-                icon: MdiIcons.facebook,
-                iconSize: 30.0,
-                onPressed: () => print('facebook'),
-              ),
-              CircleButton(
-                icon: MdiIcons.instagram,
-                iconSize: 30.0,
-                onPressed: () => print('instagram'),
-              ),
-              CircleButton(
-                icon: MdiIcons.twitter,
-                iconSize: 30.0,
-                onPressed: () => print('twitter'),
-              ),
-            ],
-          ),
-          SliverList(delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final Post post = posts[index];
-              return PostContainer(post: post);
-            },
-            childCount: posts.length,
-          )),
-        ],
+        ),
       ),
     );
+  }
+}
+
+class _HomeScreenMobile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          brightness: Brightness.light,
+          backgroundColor: Colors.white,
+          title: Text(
+            "CatchMeOn",
+            style: const TextStyle(
+              color: Palette.catchMeOn_logo_Color,
+              fontSize: 28.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: -1.2,
+            ),
+          ),
+          centerTitle: false,
+          floating: true,
+          //avatar Image
+          leading: new Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => print("Avatar"),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(currentUser.imageUrl),
+              ),
+            ),
+          ),
+
+          actions: [
+            CircleButton(
+              icon: Icons.search,
+              iconSize: 30.0,
+              onPressed: () => print('search'),
+            ),
+            CircleButton(
+              icon: MdiIcons.facebook,
+              iconSize: 30.0,
+              onPressed: () => print('facebook'),
+            ),
+            CircleButton(
+              icon: MdiIcons.instagram,
+              iconSize: 30.0,
+              onPressed: () => print('instagram'),
+            ),
+            CircleButton(
+              icon: MdiIcons.twitter,
+              iconSize: 30.0,
+              onPressed: () => print('twitter'),
+            ),
+          ],
+        ),
+        SliverList(delegate: SliverChildBuilderDelegate(
+              (context, index) {
+            final Post post = posts[index];
+            return PostContainer(post: post);
+          },
+          childCount: posts.length,
+        )),
+      ],
+    );
+  }
+}
+class _HomeScreenDesktop extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
