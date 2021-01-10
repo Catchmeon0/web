@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "821872761579",
+    "project_id": "catchmeon-e0380",
+    "storage_bucket": "catchmeon-e0380.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821872761579:android:6d50563bb9d967c65e7cae",
+        "android_client_info": {
+          "package_name": "com.example.web"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821872761579-1o51aookm1dvmee4rol9lr9nl2hvhek8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7MW48_DrAkX0yaZ-ot3u6HLCXjGnhm9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821872761579-1o51aookm1dvmee4rol9lr9nl2hvhek8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

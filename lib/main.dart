@@ -1,25 +1,54 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/screens/screens.dart';
+import 'utils/authentication_service.dart';
 
 
-void main() {
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CatchMeOn UI',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: Palette.scaffold,
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthenticationService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        title: 'Catch me on',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: AuthenticationWrapper(),
       ),
-      home: HomeScreen(),
     );
   }
 }
+
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    final firebaseUser = context.watch<User>();
+
+    if (firebaseUser != null) {
+      return HomeScreen();
+    }
+    return SignInPage();
+  }
+}
+
