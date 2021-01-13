@@ -2,7 +2,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/screens/login/signupForm.dart';
 
 import 'loginForm.dart';
@@ -73,7 +72,7 @@ class _AuthThreePageState extends State<AuthThreePage> {
                         const SizedBox(width: 10.0),
                         Expanded(
                           child: RaisedButton(
-                            color: Colors.red,
+                            color: Colors.blue,
                             textColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -144,7 +143,7 @@ class _AuthThreePageState extends State<AuthThreePage> {
                                 ? Colors.white
                                 : Colors.black,
                             color:
-                            _formsIndex == 1 ? Colors.red : Colors.white,
+                            _formsIndex == 1 ? Colors.blue : Colors.white,
                             child: Text("Login"),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0)),
@@ -160,7 +159,7 @@ class _AuthThreePageState extends State<AuthThreePage> {
                                 ? Colors.white
                                 : Colors.black,
                             color:
-                            _formsIndex == 2 ? Colors.red : Colors.white,
+                            _formsIndex == 2 ? Colors.blue : Colors.white,
                             child: Text("Signup"),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0)),
