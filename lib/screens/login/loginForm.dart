@@ -10,15 +10,12 @@ import '../screens.dart';
 
 
 
-
-Future<UserModel> registerUser(String username, String email, String password,
-    BuildContext context) async {
-  var Url = "http://localhost:8080/signup";
+Future<UserModel> loginUser(String username, String password, BuildContext context) async {
+  var Url = "http://localhost:8080/authenticate";
   var response = await http.post(Url,
-      headers: <String, String>{"Content-Type": "application/json"},
+      headers: <String, String>{"Content-Type": "application/json",},
       body: jsonEncode(<String, String>{
         "username": username,
-        "email": email,
         "password": password,
       }));
 
@@ -35,14 +32,26 @@ Future<UserModel> registerUser(String username, String email, String password,
 }
 
 
-class LoginForm extends StatelessWidget {
-  void loginPressed() {
-    print("Login pressed");
-  }
+class LoginForm extends StatefulWidget {
 
   const LoginForm({
     Key key,
   }) : super(key: key);
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+
+  UserModel userModel;
+
+  TextEditingController usernameController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +66,7 @@ class LoginForm extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[
           TextFormField(
+            controller: usernameController,
             // ignore: missing_return
             validator: (String value) {
               if (value.isEmpty) {
@@ -71,6 +81,7 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 10.0),
           TextFormField(
+            controller:  passwordController,
             // ignore: missing_return
             validator: (String value) {
               if (value.isEmpty) {
@@ -93,7 +104,23 @@ class LoginForm extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0),
             ),
             child: Text("Login"),
-            onPressed: loginPressed,
+            onPressed: () async {
+              String username = usernameController.text;
+              String password = passwordController.text;
+              UserModel user = await loginUser(username, password, context);
+
+              setState(() {
+                userModel = user;
+              });
+
+              print("Login pressed");
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavScreen()),
+              );
+
+            },
           ),
         ],
       ),

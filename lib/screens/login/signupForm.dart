@@ -10,11 +10,7 @@ import '../screens.dart';
 Future<UserModel> registerUser(String username, String email, String password, BuildContext context) async {
   var Url = "http://localhost:8080/signup";
   var response = await http.post(Url,
-      headers: <String, String>{"Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": "true", // Required for cookies, authorization headers with HTTPS
-      "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
-      "Access-Control-Allow-Methods": "POST, OPTIONS"},
+      headers: <String, String>{"Content-Type": "application/json",},
       body: jsonEncode(<String, String>{
         "username": username,
         "email": email,
@@ -123,6 +119,7 @@ class _SignupFormState extends State<SignupForm> {
               });
 
               print("Signup pressed");
+              const Duration(seconds: 1);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AuthThreePage()),
