@@ -5,7 +5,7 @@ import 'package:web/screens/screens.dart';
 import 'package:web/widgets/custom_app_bar.dart';
 import 'package:web/widgets/widgets.dart';
 
-class NavScreen extends StatefulWidget {
+class   NavScreen extends StatefulWidget {
   @override
   _NavScreenState createState() => _NavScreenState();
 }
