@@ -119,10 +119,10 @@ class _SignupFormState extends State<SignupForm> {
               });
 
               print("Signup pressed");
-              const Duration(seconds: 1);
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AuthThreePage()),
+                MaterialPageRoute(builder: (context) => NavScreen()),
               );
             },
           ),
