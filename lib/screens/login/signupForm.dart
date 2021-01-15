@@ -26,6 +26,18 @@ Future<UserModel> registerUser(String username, String email, String password, B
         return MyAlertDialog(title: 'Backend Response', content: response.body);
       },
     );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AuthThreePage()),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:  Text('$username account has been created'),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () { },
+      ),
+    ));
   }
 }
 
@@ -45,6 +57,7 @@ class _SignupFormState extends State<SignupForm> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController pwdController = TextEditingController();
+  TextEditingController pwdControllerConfirmation = TextEditingController();
 
   UserModel userModel;
 
@@ -89,6 +102,7 @@ class _SignupFormState extends State<SignupForm> {
           ),
           const SizedBox(height: 10.0),
           TextFormField(
+            controller: pwdControllerConfirmation,
             obscureText: true,
             decoration: InputDecoration(
               labelText: "confirm password",
@@ -113,6 +127,7 @@ class _SignupFormState extends State<SignupForm> {
               usernameController.text = '';
               emailController.text = '';
               pwdController.text = '';
+              pwdControllerConfirmation.text ='';
 
               setState(() {
                 userModel = user;
@@ -120,10 +135,7 @@ class _SignupFormState extends State<SignupForm> {
 
               print("Signup pressed");
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NavScreen()),
-              );
+
             },
           ),
         ],

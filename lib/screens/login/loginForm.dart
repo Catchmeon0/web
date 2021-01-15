@@ -28,6 +28,18 @@ Future<UserModel> loginUser(String username, String password, BuildContext conte
         return MyAlertDialog(title: 'Backend Response', content: response.body);
       },
     );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NavScreen()),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:  Text('Welcome $username'),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () { },
+      ),
+    ));
   }
 }
 
@@ -115,10 +127,6 @@ class _LoginFormState extends State<LoginForm> {
 
               print("Login pressed");
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NavScreen()),
-              );
 
             },
           ),
