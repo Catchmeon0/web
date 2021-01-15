@@ -7,10 +7,13 @@ import 'package:web/models/models.dart';
 
 import '../screens.dart';
 
-Future<UserModel> registerUser(String username, String email, String password, BuildContext context) async {
+Future<UserModel> registerUser(String username, String email, String password,
+    BuildContext context) async {
   var Url = "http://localhost:8080/signup";
   var response = await http.post(Url,
-      headers: <String, String>{"Content-Type": "application/json",},
+      headers: <String, String>{
+        "Content-Type": "application/json",
+      },
       body: jsonEncode(<String, String>{
         "username": username,
         "email": email,
@@ -23,7 +26,8 @@ Future<UserModel> registerUser(String username, String email, String password, B
       context: context,
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
-        return MyAlertDialog(title: 'Backend Response', content: response.body);
+        return MyAlertDialog(
+            title: 'Backend Response', content: responseString);
       },
     );
     Navigator.push(
@@ -31,26 +35,28 @@ Future<UserModel> registerUser(String username, String email, String password, B
       MaterialPageRoute(builder: (context) => AuthThreePage()),
     );
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:  Text('$username account has been created'),
+      content: Text('$username account has been created'),
       duration: const Duration(seconds: 3),
       action: SnackBarAction(
         label: 'Close',
-        onPressed: () { },
+        onPressed: () {},
       ),
     ));
   }
 }
 
-
-
 class SignupForm extends StatefulWidget {
-
   @override
   _SignupFormState createState() => _SignupFormState();
 }
 
 class _SignupFormState extends State<SignupForm> {
-
+// Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a GlobalKey<FormState>,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
 
   TextEditingController usernameController = TextEditingController();
 
@@ -63,87 +69,96 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16.0),
-        children: <Widget>[
-          TextFormField(
-            controller: usernameController,
-            decoration: InputDecoration(
-              labelText: "username",
-              hintText: "Enter username",
-              border: OutlineInputBorder(),
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(16.0),
+          children: <Widget>[
+            TextFormField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: "username",
+                hintText: "Enter username",
+                border: OutlineInputBorder(),
+              ),
+              validator: validateUsername,
             ),
-          ),
-          const SizedBox(height: 10.0),
-          TextFormField(
-            controller: emailController,
-            decoration: InputDecoration(
-              labelText: "email",
-              hintText: "Enter email",
-              border: OutlineInputBorder(),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: "email",
+                hintText: "Enter email",
+                border: OutlineInputBorder(),
+              ),
+              validator: validateEmail,
             ),
-          ),
-          const SizedBox(height: 10.0),
-          TextFormField(
-            controller: pwdController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: "password",
-              hintText: "Enter password",
-              border: OutlineInputBorder(),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: pwdController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "password",
+                hintText: "Enter password",
+                border: OutlineInputBorder(),
+              ),
+              validator: validatePassword,
             ),
-          ),
-          const SizedBox(height: 10.0),
-          TextFormField(
-            controller: pwdControllerConfirmation,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: "confirm password",
-              hintText: "Confirm password",
-              border: OutlineInputBorder(),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: pwdControllerConfirmation,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "confirm password",
+                hintText: "Confirm password",
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) => validatePasswordConfirma(
+                  value, pwdController.text, pwdControllerConfirmation.text),
             ),
-          ),
-          const SizedBox(height: 10.0),
-          RaisedButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Text("Signup"),
-            onPressed: () async {
-              String username = usernameController.text;
-              String email = emailController.text;
-              String password = pwdController.text;
-              UserModel user = await registerUser(username, email,password, context );
-              usernameController.text = '';
-              emailController.text = '';
-              pwdController.text = '';
-              pwdControllerConfirmation.text ='';
+            const SizedBox(height: 10.0),
+            RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Text("Signup"),
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  String username = usernameController.text;
+                  String email = emailController.text;
+                  String password = pwdController.text;
+                  UserModel user =
+                      await registerUser(username, email, password, context);
+                  usernameController.text = '';
+                  emailController.text = '';
+                  pwdController.text = '';
+                  pwdControllerConfirmation.text = '';
 
-              setState(() {
-                userModel = user;
-              });
+                  setState(() {
+                    userModel = user;
+                  });
 
-              print("Signup pressed");
-
-
-            },
-          ),
-        ],
+                  print("Signup pressed");
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
 
 class MyAlertDialog extends StatelessWidget {
   final String title;
@@ -170,4 +185,41 @@ class MyAlertDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+String validateUsername(String value) {
+  if (value.length < 4)
+    return 'Name must be more than 3 charater';
+  else
+    return null;
+}
+
+String validateEmail(String value) {
+  Pattern pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  if (value.isEmpty) {
+    return 'Please Enter Email';
+  }
+  if (!regex.hasMatch(value))
+    return 'Enter Valid Email';
+  else
+    return null;
+}
+
+String validatePasswordConfirma(String value, String pwd, String pwdConfirm) {
+  if (value.isEmpty)
+    return 'Please confirm password';
+  else if (pwd != pwdConfirm) {
+    return 'Password do not match';
+  } else
+    return null;
+}
+
+String validatePassword(String value) {
+  if (value.isEmpty)
+    return 'Please Enter password';
+  else if (value.length < 6)
+    return 'password must contain at least 6 characters';
+  return null;
 }
