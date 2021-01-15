@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.1
   cached_network_image: ^2.2.0+1
   material_design_icons_flutter: ^4.0.5345
+  get_storage : 1.4.0
 
 
 dev_dependencies:

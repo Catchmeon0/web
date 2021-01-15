@@ -1,19 +1,21 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/screens/login/signupForm.dart';
 import 'package:http/http.dart' as http;
 
+
 import '../screens.dart';
-
-
-
-Future<UserModel> loginUser(String username, String password, BuildContext context) async {
+final box = GetStorage();
+Future<UserModel> loginUser(
+    String username, String password, BuildContext context) async {
   var Url = "http://localhost:8080/authenticate";
   var response = await http.post(Url,
-      headers: <String, String>{"Content-Type": "application/json",},
+      headers: <String, String>{
+        "Content-Type": "application/json",
+      },
       body: jsonEncode(<String, String>{
         "username": username,
         "password": password,
@@ -21,11 +23,17 @@ Future<UserModel> loginUser(String username, String password, BuildContext conte
 
   String responseString = response.body;
   if (response.statusCode == 200) {
+    //
+    var parsedJson = JsonDecoder().convert(responseString);
+    String token = parsedJson['jwt'];
+
+    box.write("token", token);
+
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
-        return MyAlertDialog(title: 'Backend Response', content: response.body);
+        return MyAlertDialog(title: 'Backend Response ${box.read('token')}', content: response.body);
       },
     );
     Navigator.push(
@@ -33,19 +41,17 @@ Future<UserModel> loginUser(String username, String password, BuildContext conte
       MaterialPageRoute(builder: (context) => NavScreen()),
     );
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:  Text('Welcome $username'),
+      content: Text('Welcome $username'),
       duration: const Duration(seconds: 3),
       action: SnackBarAction(
         label: 'Close',
-        onPressed: () { },
+        onPressed: () {},
       ),
     ));
   }
 }
 
-
 class LoginForm extends StatefulWidget {
-
   const LoginForm({
     Key key,
   }) : super(key: key);
@@ -55,15 +61,11 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
   UserModel userModel;
 
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const SizedBox(height: 10.0),
           TextFormField(
-            controller:  passwordController,
+            controller: passwordController,
             // ignore: missing_return
             validator: (String value) {
               if (value.isEmpty) {
@@ -126,8 +128,6 @@ class _LoginFormState extends State<LoginForm> {
               });
 
               print("Login pressed");
-
-
             },
           ),
         ],
