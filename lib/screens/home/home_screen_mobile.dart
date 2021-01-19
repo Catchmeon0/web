@@ -72,7 +72,8 @@ class HomeScreenMobile extends StatelessWidget {
                 return PostContainer(post: post);
               },
               childCount: posts.length,
-            )),
+            )
+        ),
       ],
     );
   }

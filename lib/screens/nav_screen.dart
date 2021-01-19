@@ -5,6 +5,8 @@ import 'package:web/screens/screens.dart';
 import 'package:web/widgets/custom_app_bar.dart';
 import 'package:web/widgets/widgets.dart';
 
+import 'homeTwetter/tweet_screen.dart';
+
 class   NavScreen extends StatefulWidget {
   @override
   _NavScreenState createState() => _NavScreenState();
@@ -14,12 +16,12 @@ class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
     Scaffold(),
-    // Scaffold(),
+    HomeScreenTweets(),
   ];
   final List<IconData> _icons = const [
     Icons.home,
     MdiIcons.accountCircleOutline,
-    // Icons.settings,
+    MdiIcons.twitter,
   ];
   int _selectedIndex = 0;
 

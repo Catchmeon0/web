@@ -1,4 +1,7 @@
+import 'dart:collection';
 import 'dart:convert';
+
+import 'package:web/screens/login/signupForm.dart';
 
 UserModel userModelJson(String str) => UserModel.fromJson(jsonDecode(str));
 
@@ -11,6 +14,7 @@ class UserModel {
   String username;
   String password;
   String email;
+  HashMap<String, String> userIds;
 
   UserModel(
       {this.id,
@@ -18,7 +22,8 @@ class UserModel {
       this.lastName,
       this.username,
       this.password,
-      this.email});
+      this.email,
+      this.userIds});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
       id: json['id'],
@@ -26,7 +31,8 @@ class UserModel {
       lastName: json['lastName'],
       username: json['username'],
       password: json['password'],
-      email: json['email']);
+      email: json['email'],
+      userIds: json['userIds']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -35,6 +41,7 @@ class UserModel {
         "username": username,
         "password": password,
         "email": email,
+        "userIds": userIds,
       };
 
   String get userName => username;
@@ -48,4 +55,6 @@ class UserModel {
   String get pseudoname => username;
 
   String get mailadress => email;
+
+  String get userids => userids;
 }
