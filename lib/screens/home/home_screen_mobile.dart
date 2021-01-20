@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/login/logscreen.dart';
 import 'package:web/widgets/widgets.dart';
 
 class HomeScreenMobile extends StatelessWidget {
@@ -49,11 +50,6 @@ class HomeScreenMobile extends StatelessWidget {
               onPressed: () => print('search'),
             ),
             CircleButton(
-              icon: MdiIcons.facebook,
-              iconSize: 30.0,
-              onPressed: () => print('facebook'),
-            ),
-            CircleButton(
               icon: MdiIcons.instagram,
               iconSize: 30.0,
               onPressed: () => print('instagram'),
@@ -62,6 +58,14 @@ class HomeScreenMobile extends StatelessWidget {
               icon: MdiIcons.twitter,
               iconSize: 30.0,
               onPressed: () => print('twitter'),
+            ),
+            CircleButton(
+              icon: MdiIcons.logout,
+              iconSize: 30.0,
+              onPressed: () =>  Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthThreePage()),
+              ),
             ),
           ],
         ),

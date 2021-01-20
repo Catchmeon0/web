@@ -21,8 +21,8 @@ Future<UserModel> registerUser(String username, String email, String password,
       }));
 
   String responseString = response.body;
-  if(response.statusCode==500){
-    registerUser( username,  email,  password,context);
+  if (response.statusCode == 500) {
+    registerUser(username, email, password, context);
   }
   if (response.statusCode == 200) {
     showDialog(
