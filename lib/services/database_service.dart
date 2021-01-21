@@ -4,6 +4,13 @@ import 'package:web/utilities/constants.dart';
 
 class DatabaseService {
 
+  static void updateUser(UserModel user) {
+    usersRef.document(user.id).updateData({
+      'name': user.name,
+      'profileImageUrl': user.profileImageUrl,
+    });
+  }
+
   static Future<bool> isFollowingUser(
       {String currentUserId, String userId}) async {
     DocumentSnapshot followingDoc = await followersRef
