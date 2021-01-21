@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/user_data.dart';
+import 'package:web/services/auth_service.dart';
 import 'package:web/services/database_service.dart';
+import 'package:web/utilities/constants.dart';
 
 import 'edit_profile_screen.dart';
 
@@ -111,7 +114,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   name: updateUser.name,
                   email: user.email,
                   profileImageUrl: updateUser.profileImageUrl,
-                  bio: updateUser.bio,
                 );
                 setState(() => _profileUser = updatedUser);
               },
@@ -140,10 +142,126 @@ class _ProfilScreenState extends State<ProfilScreen> {
     );
   }
 
+  _buildProfileInfo(UserModel user) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+          child: Row(
+            children: <Widget>[
+              CircleAvatar(
+                radius: 50.0,
+                backgroundColor: Colors.grey,
+                backgroundImage: user.profileImageUrl.isEmpty
+                    ? AssetImage('assets/images/user_placeholder.jpg')
+                    : CachedNetworkImageProvider(user.profileImageUrl),
+              ),
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              _followerCount.toString(),
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              'followers',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              _followingCount.toString(),
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              'following',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    _displayButton(user),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                user.name,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 5.0),
+              Divider(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Catchmeon',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Billabong',
+            fontSize: 35.0,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: AuthService.logout,
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future: usersRef.document(widget.userId).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          UserModel user = UserModel.fromDoc(snapshot.data);
+          return ListView(
+            children: <Widget>[
+              _buildProfileInfo(user),
+              Divider(),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
