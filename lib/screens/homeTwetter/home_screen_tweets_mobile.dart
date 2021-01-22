@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,36 +19,45 @@ import 'package:web/utilities/keys.dart';
 
 class HomeScreenTweetsnMobile extends StatelessWidget {
   final TrackingScrollController scrollController;
-  final List listId = [
-    "1351507304697520129",
-    "1351521894080671744",
-    "1351233814190829572"
-  ];
 
   HomeScreenTweetsnMobile({Key key, @required this.scrollController})
       : super(key: key);
 
-var tweet ;
-     Future<dynamic> loadTweetJSON(String id) async {
-      String  token = "Bearer "+box.read("token");
+  var tweet;
 
-      var Url = "http://localhost:8080/getTweetFromUser?userTwetterId=1351521894080671744";
-      var response = await http.get(
-        Url,
-       headers:  <String, String>{
-          "Content-Type": "application/json",
-          /*"Authorization": token,*/
-        }, ) ;
-      print( response.body.toString());
+  Future<dynamic> loadTweetJSON(int id) async {
+    String token = "Bearer " + box.read("token");
+    String username = box.read("username");
 
-      if (response.statusCode == 200) {
-        String responseString = response.body;
-        box.write("tweet1", responseString.toString());
+    var Url =
+        "http://localhost:8080/getTweetFromUser?userTwetterId=" + username;
+    var response = await http.get(
+      Url,
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        /*"Authorization": token,*/
+      },
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      var parsedJson = JsonDecoder().convert(responseString);
+
+
+      int dataSize = JsonDecoder().convert(response.body).length - 1;
+      box.write("dataSize", dataSize.toInt());
+
+      for(int i =0; i<dataSize;i++){
+        var data = parsedJson["$i"];
+        box.write("tweet$i", data);
+        print("tweet$i");
       }
+
 
     }
 
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +107,16 @@ var tweet ;
           ],
         ),
         SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            loadTweetJSON("1351233814190829572");
-            print(tweet);
-            return EmbeddedTweetView.fromTweet(
-                Tweet.fromRawJson(box.read("tweet1")));
-          },
-          childCount: 1),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (box.read("tweet$index") == null) {
+                loadTweetJSON(index);
+              }
+              return EmbeddedTweetView.fromTweet(
+                  Tweet.fromJson(box.read("tweet$index")));
+            },
+            childCount: box.read("dataSize"),
+          ),
         ),
       ],
     );
