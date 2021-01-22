@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tweet_ui/default_text_styles.dart';
 import 'package:tweet_ui/embedded_tweet_view.dart';
 import 'package:tweet_ui/models/api/tweet.dart';
 import 'package:tweet_webview/tweet_webview.dart';
@@ -17,15 +18,29 @@ import 'package:web/screens/login/loginForm.dart';
 
 import 'package:web/utilities/keys.dart';
 
-class HomeScreenTweetsnMobile extends StatelessWidget {
+class HomeScreenTweetsnMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
 
   HomeScreenTweetsnMobile({Key key, @required this.scrollController})
       : super(key: key);
 
+  @override
+  _HomeScreenTweetsnMobileState createState() => _HomeScreenTweetsnMobileState();
+}
+
+class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
+  bool loading;
+
+  @override
+  void initState() {
+    super.initState();
+    loading = true;
+    loadTweetJSON();
+  }
+
   var tweet;
 
-  Future<dynamic> loadTweetJSON(int id) async {
+  Future<dynamic> loadTweetJSON() async {
     String token = "Bearer " + box.read("token");
     String username = box.read("username");
 
@@ -44,25 +59,25 @@ class HomeScreenTweetsnMobile extends StatelessWidget {
       String responseString = response.body;
       var parsedJson = JsonDecoder().convert(responseString);
 
-
       int dataSize = JsonDecoder().convert(response.body).length - 1;
       box.write("dataSize", dataSize.toInt());
 
-      for(int i =0; i<dataSize;i++){
+      for (int i = 0; i < dataSize; i++) {
         var data = parsedJson["$i"];
         box.write("tweet$i", data);
         print("tweet$i");
       }
 
-
+      setState(() {
+        loading = false;
+      });
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: scrollController,
+      controller: widget.scrollController,
       slivers: [
         SliverAppBar(
           brightness: Brightness.light,
@@ -109,11 +124,11 @@ class HomeScreenTweetsnMobile extends StatelessWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              if (box.read("tweet$index") == null) {
-                loadTweetJSON(index);
-              }
-              return EmbeddedTweetView.fromTweet(
-                  Tweet.fromJson(box.read("tweet$index")));
+              return
+              !loading
+                  ? EmbeddedTweetView.fromTweet(
+                      Tweet.fromJson(box.read("tweet$index")))
+                  : LinearProgressIndicator();
             },
             childCount: box.read("dataSize"),
           ),
