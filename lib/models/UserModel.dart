@@ -45,14 +45,14 @@ class UserModel {
         "userIds": userIds,
   };
 
-  factory UserModel.fromDoc(DocumentSnapshot doc) {
+  factory UserModel.fromDoc(DocumentSnapshot doc, Map docdata) {
     return UserModel(
       id: doc.id,
-      name: doc['name'],
-      username: doc['username'],
-      password: doc['password'],
-      profileImageUrl: doc['profileImageUrl'],
-      email: doc['email'] ?? '',
+      name: docdata['name'],
+      username: docdata['username'],
+      password: docdata['password'],
+      profileImageUrl: docdata['profileImageUrl'],
+      email: docdata['email'] ?? '',
     );
   }
 }

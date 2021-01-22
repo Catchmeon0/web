@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
@@ -247,13 +248,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
       ),
       body: FutureBuilder(
         future: usersRef.doc(widget.userId).get(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: ( context,  snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          UserModel user = UserModel.fromDoc(snapshot.data);
+          String x= usersRef.doc(widget.userId).id;
+          UserModel user = UserModel.fromDoc(usersRef.doc(widget.userId),snapshot.data);
           return ListView(
             children: <Widget>[
               _buildProfileInfo(user),
