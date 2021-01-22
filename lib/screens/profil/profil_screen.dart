@@ -246,7 +246,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
         ],
       ),
       body: FutureBuilder(
-        future: usersRef.document(widget.userId).get(),
+        future: usersRef.doc(widget.userId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(

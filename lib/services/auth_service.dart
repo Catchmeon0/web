@@ -15,9 +15,9 @@ class AuthService {
         email: email,
         password: password,
       );
-      FirebaseUser signedInUser = userCredential.user;
+      User signedInUser = userCredential.user;
       if (signedInUser != null) {
-        _firestore.collection('/users').document(signedInUser.uid).setData({
+        _firestore.collection('/users').doc(signedInUser.uid).set({
           'name': name,
           'email': email,
           'profileImageUrl': '',

@@ -5,7 +5,7 @@ import 'package:web/utilities/constants.dart';
 class DatabaseService {
 
   static void updateUser(UserModel user) {
-    usersRef.document(user.id).updateData({
+    usersRef.doc(user.id).update({
       'name': user.name,
       'profileImageUrl': user.profileImageUrl,
     });
@@ -14,31 +14,31 @@ class DatabaseService {
   static Future<bool> isFollowingUser(
       {String currentUserId, String userId}) async {
     DocumentSnapshot followingDoc = await followersRef
-        .document(userId)
+        .doc(userId)
         .collection('userFollowers')
-        .document(currentUserId)
+        .doc(currentUserId)
         .get();
     return followingDoc.exists;
   }
 
   static Future<int> numFollowing(String userId) async {
     QuerySnapshot followingSnapshot = await followingRef
-        .document(userId)
+        .doc(userId)
         .collection('userFollowing')
-        .getDocuments();
-    return followingSnapshot.documents.length;
+        .get();
+    return followingSnapshot.docs.length;
   }
 
   static Future<int> numFollowers(String userId) async {
     QuerySnapshot followersSnapshot = await followersRef
-        .document(userId)
+        .doc(userId)
         .collection('userFollowers')
-        .getDocuments();
-    return followersSnapshot.documents.length;
+        .get();
+    return followersSnapshot.docs.length;
   }
 
   static Future<UserModel> getUserWithId(String userId) async {
-    DocumentSnapshot userDocSnapshot = await usersRef.document(userId).get();
+    DocumentSnapshot userDocSnapshot = await usersRef.doc(userId).get();
     if (userDocSnapshot.exists) {
       return UserModel.fromDoc(userDocSnapshot);
     }
@@ -49,24 +49,24 @@ class DatabaseService {
   static void followUser({String currentUserId, String userId}) {
     // Add user to current user's following collection
     followingRef
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('userFollowing')
-        .document(userId)
-        .setData({});
+        .doc(userId)
+        .set({});
     // Add current user to user's followers collection
     followersRef
-        .document(userId)
+        .doc(userId)
         .collection('userFollowers')
-        .document(currentUserId)
-        .setData({});
+        .doc(currentUserId)
+        .set({});
   }
 
   static void unfollowUser({String currentUserId, String userId}) {
     // Remove user from current user's following collection
     followingRef
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('userFollowing')
-        .document(userId)
+        .doc(userId)
         .get()
         .then((doc) {
       if (doc.exists) {
@@ -75,9 +75,9 @@ class DatabaseService {
     });
     // Remove current user from user's followers collection
     followersRef
-        .document(userId)
+        .doc(userId)
         .collection('userFollowers')
-        .document(currentUserId)
+        .doc(currentUserId)
         .get()
         .then((doc) {
       if (doc.exists) {
