@@ -26,8 +26,10 @@ Future<UserModel> loginUser(
     //
     var parsedJson = JsonDecoder().convert(responseString);
     String token = parsedJson['jwt'];
+    String username = parsedJson['username'];
 
     box.write("token", token);
+    box.write("username", username);
 
     showDialog(
       context: context,

@@ -15,6 +15,7 @@ class UserModel {
   String password;
   String email;
   HashMap<String, String> userIds;
+  List<String> userFollowed;
 
   UserModel(
       {this.id,
@@ -23,7 +24,8 @@ class UserModel {
       this.username,
       this.password,
       this.email,
-      this.userIds});
+      this.userIds,
+      this.userFollowed});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
       id: json['id'],
@@ -32,7 +34,8 @@ class UserModel {
       username: json['username'],
       password: json['password'],
       email: json['email'],
-      userIds: json['userIds']);
+      userIds: json['userIds'],
+      userFollowed: json['userFollowed']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -42,6 +45,7 @@ class UserModel {
         "password": password,
         "email": email,
         "userIds": userIds,
+        "userFollowed":userFollowed,
       };
 
   String get userName => username;

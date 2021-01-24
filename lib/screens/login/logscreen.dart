@@ -32,7 +32,7 @@ class _AuthThreePageState extends State<AuthThreePage> {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(backImg),
+              image: AssetImage(backImg),
               fit: BoxFit.cover,
             ),
           ),
