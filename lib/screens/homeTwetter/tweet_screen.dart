@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:twitter_api/twitter_api.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
-import 'package:web/utilities/keys.dart';
 import 'package:web/widgets/widgets.dart';
 
 import 'home_screen_tweets_mobile.dart';

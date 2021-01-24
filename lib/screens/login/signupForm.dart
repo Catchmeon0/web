@@ -7,47 +7,6 @@ import 'package:web/models/models.dart';
 
 import '../screens.dart';
 
-Future<UserModel> registerUser(String username, String email, String password,
-    BuildContext context) async {
-  var Url = "http://localhost:8080/signup";
-  var response = await http.post(Url,
-      headers: <String, String>{
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(<String, String>{
-        "username": username,
-        "email": email,
-        "password": password,
-      }));
-
-  String responseString = response.body;
-  if (response.statusCode == 500) {
-    registerUser(username, email, password, context);
-  }
-  if (response.statusCode == 200) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext dialogContext) {
-        return MyAlertDialog(
-            title: 'Backend Response', content: responseString);
-      },
-    );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AuthThreePage()),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('$username account has been created'),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {},
-      ),
-    ));
-  }
-}
-
 class SignupForm extends StatefulWidget {
   @override
   _SignupFormState createState() => _SignupFormState();
@@ -69,6 +28,46 @@ class _SignupFormState extends State<SignupForm> {
   TextEditingController pwdControllerConfirmation = TextEditingController();
 
   UserModel userModel;
+
+  bool loading;
+
+  @override
+  void initState() {
+    super.initState();
+    loading = true;
+  }
+
+  Future<UserModel> registerUser(String username, String email, String password,
+      BuildContext context) async {
+    var Url = "http://localhost:8080/signup";
+    var response = await http.post(Url,
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(<String, String>{
+          "username": username,
+          "email": email,
+          "password": password,
+        }));
+
+    String responseString = response.body;
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext dialogContext) {
+          return MyAlertDialog(
+              title: 'Backend Response', content: responseString);
+        },
+      );
+
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +152,21 @@ class _SignupFormState extends State<SignupForm> {
                   });
 
                   print("Signup pressed");
+                }
+                if (!loading) {
+                  String username = usernameController.text;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AuthThreePage()),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('$username account has been created'),
+                    duration: const Duration(seconds: 3),
+                    action: SnackBarAction(
+                      label: 'Close',
+                      onPressed: () {},
+                    ),
+                  ));
                 }
               },
             ),
