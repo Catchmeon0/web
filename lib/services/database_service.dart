@@ -40,7 +40,7 @@ class DatabaseService {
   static Future<UserModel> getUserWithId(String userId) async {
     DocumentSnapshot userDocSnapshot = await usersRef.doc(userId).get();
     if (userDocSnapshot.exists) {
-      return UserModel.fromDoc(userDocSnapshot,userDocSnapshot.data());
+      return UserModel.fromDoc(userDocSnapshot);
     }
     return UserModel();
   }

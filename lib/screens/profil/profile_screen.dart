@@ -10,18 +10,18 @@ import 'package:web/utilities/constants.dart';
 
 import 'edit_profile_screen.dart';
 
-class ProfilScreen extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
 
-  String currentUserId;
-  String userId;
+  final String currentUserId;
+  final String userId ;
 
-  // ProfileScreen({this.currentUserId, this.userId});
+  ProfileScreen({this.currentUserId, this.userId});
 
   @override
-  _ProfilScreenState createState() => _ProfilScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfilScreenState extends State<ProfilScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
 
   bool _isFollowing = false;
   int _followerCount = 0;
@@ -249,19 +249,41 @@ class _ProfilScreenState extends State<ProfilScreen> {
       body: FutureBuilder(
         future: usersRef.doc(widget.userId).get(),
         builder: ( context,  snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+
+          switch (snapshot.connectionState) {
+          // Uncompleted State
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+              break;
+            default:
+                // Completed with error
+                if (snapshot.hasError)
+                  return Container(child: Text(snapshot.error.toString()));
+                // Completed with data
+                if (snapshot.hasData) {
+
+                  print('*********************************');
+                  print(usersRef.doc(widget.userId));
+                  print(snapshot.data.data());
+                  UserModel user = UserModel.fromDoc(snapshot.data);
+
+                }
+                return ListView(
+                  children: <Widget>[
+                    // _buildProfileInfo(user),
+                    Divider(),
+                  ],
+                );
           }
-          String x= usersRef.doc(widget.userId).id;
-          UserModel user = UserModel.fromDoc(usersRef.doc(widget.userId),snapshot.data);
-          return ListView(
-            children: <Widget>[
-              _buildProfileInfo(user),
-              Divider(),
-            ],
-          );
+          // UserModel user = UserModel.fromDoc(snapshot.data);
+          // return ListView(
+          //   children: <Widget>[
+          //     // _buildProfileInfo(user),
+          //     Divider(),
+          //   ],
+          // );
+
         },
       ),
     );

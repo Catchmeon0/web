@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:web/data/data.dart';
-import 'package:web/screens/profil/profil_screen.dart';
+import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/screens/screens.dart';
 import 'package:web/widgets/custom_app_bar.dart';
 import 'package:web/widgets/widgets.dart';
@@ -16,7 +16,7 @@ class   NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
-    ProfilScreen(),
+    ProfileScreen(),
     Scaffold(),
     HomeScreenTweets(),
   ];
