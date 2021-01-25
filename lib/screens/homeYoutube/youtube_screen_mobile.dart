@@ -6,6 +6,8 @@ import 'package:web/models/models.dart';
 import 'package:web/screens/login/logscreen.dart';
 import 'package:web/widgets/widgets.dart';
 
+import 'home_screen.dart';
+
 class HomeScreenYoutubeMobile extends StatelessWidget {
   final TrackingScrollController scrollController;
 
@@ -73,9 +75,9 @@ class HomeScreenYoutubeMobile extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
                   (context, index) {
                 final Post post = posts[index];
-                return PostContainer(post: post);
+                return HomeScreenYTB();
               },
-              childCount: posts.length,
+              childCount: 1,
             )
         ),
       ],
