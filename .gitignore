@@ -47,3 +47,4 @@ app.*.map.json
 
 pubspec.lock
 lib/utilities/keys.dart
+lib/utilities/dart/key.dart

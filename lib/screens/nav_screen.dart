@@ -6,6 +6,7 @@ import 'package:web/widgets/custom_app_bar.dart';
 import 'package:web/widgets/widgets.dart';
 
 import 'homeTwetter/tweet_screen.dart';
+import 'homeYoutube/youtube_screen.dart';
 
 class   NavScreen extends StatefulWidget {
   @override
@@ -17,11 +18,14 @@ class _NavScreenState extends State<NavScreen> {
     HomeScreen(),
     Scaffold(),
     HomeScreenTweets(),
+    HomeScreenYoutube(),
+
   ];
   final List<IconData> _icons = const [
     Icons.home,
     MdiIcons.accountCircleOutline,
     MdiIcons.twitter,
+    MdiIcons.youtube,
   ];
   int _selectedIndex = 0;
 
