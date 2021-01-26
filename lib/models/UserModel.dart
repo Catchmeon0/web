@@ -1,7 +1,6 @@
-import 'dart:collection';
 import 'dart:convert';
 
-import 'package:web/screens/login/signupForm.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 UserModel userModelJson(String str) => UserModel.fromJson(jsonDecode(str));
 
@@ -9,56 +8,45 @@ String userModelToJson(UserModel data) => jsonEncode(data);
 
 class UserModel {
   String id;
-  String firstName;
-  String lastName;
+  String name;
   String username;
   String password;
+  String profileImageUrl;
   String email;
-  HashMap<String, String> userIds;
-  List<String> userFollowed;
 
   UserModel(
       {this.id,
-      this.firstName,
-      this.lastName,
-      this.username,
-      this.password,
-      this.email,
-      this.userIds,
-      this.userFollowed});
+       this.name,
+       this.username,
+       this.password,
+       this.profileImageUrl,
+       this.email});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
       id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
+      name: json['name'],
       username: json['username'],
       password: json['password'],
-      email: json['email'],
-      userIds: json['userIds'],
-      userFollowed: json['userFollowed']);
+      profileImageUrl: json['profileImageUrl'],
+      email: json['email']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "firstName": firstName,
-        "lastName": lastName,
+        "name": name,
         "username": username,
         "password": password,
+        "profileImageUrl": profileImageUrl,
         "email": email,
-        "userIds": userIds,
-        "userFollowed":userFollowed,
-      };
+  };
 
-  String get userName => username;
-
-  String get firstname => firstName;
-
-  String get lastname => lastName;
-
-  String get pwd => password;
-
-  String get pseudoname => username;
-
-  String get mailadress => email;
-
-  String get userids => userids;
+  factory UserModel.fromDoc(DocumentSnapshot doc) {
+    return UserModel(
+      id: doc.id,
+      name: doc.data()['name'],
+      username: doc.data()['username'],
+      password: doc.data()['password'],
+      profileImageUrl: doc.data()['profileImageUrl'],
+      email: doc.data()['email'] ,
+    );
+  }
 }
