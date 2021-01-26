@@ -23,7 +23,6 @@ class _NavScreenState extends State<NavScreen> {
       currentUserId: box.read("currentUserId"),
       userId: box.read("currentUserId"),
     ),
-    Scaffold(),
     HomeScreenTweets(),
     HomeScreenYoutube(),
   ];
