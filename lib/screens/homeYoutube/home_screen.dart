@@ -5,6 +5,12 @@ import 'package:web/services/api_service.dart';
 import 'package:web/widgets/widgets.dart';
 
 class HomeScreenYTB extends StatefulWidget {
+   final String channelID;
+
+  const HomeScreenYTB({Key key, @required  this.channelID})
+      : super(key: key);
+
+
   @override
   _HomeScreenYTBState createState() => _HomeScreenYTBState();
 }
@@ -12,6 +18,10 @@ class HomeScreenYTB extends StatefulWidget {
 class _HomeScreenYTBState extends State<HomeScreenYTB> {
   Channel _channel;
   bool _isLoading = false;
+
+
+
+
 
   @override
   void initState() {
@@ -21,7 +31,7 @@ class _HomeScreenYTBState extends State<HomeScreenYTB> {
 
   _initChannel() async {
     Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UC8RszAOoVLLFgkkZoqwr5ug');
+        .fetchChannel(channelId: widget.channelID);
     setState(() {
       _channel = channel;
     });

@@ -9,9 +9,10 @@ import 'package:web/widgets/widgets.dart';
 import 'home_screen.dart';
 
 class HomeScreenYoutubeMobile extends StatelessWidget {
+  final List<String> channelsID = ["UCiRDO4sVx9dsyMm9F7eWMvw", "UC8RszAOoVLLFgkkZoqwr5ug", "UCb3c6rB0Ru1i9EUcc-a5ZJw"];
   final TrackingScrollController scrollController;
 
-  const HomeScreenYoutubeMobile({Key key, @required this.scrollController})
+   HomeScreenYoutubeMobile({Key key, @required this.scrollController})
       : super(key: key);
 
   @override
@@ -74,10 +75,10 @@ class HomeScreenYoutubeMobile extends StatelessWidget {
         SliverList(
             delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                final Post post = posts[index];
-                return HomeScreenYTB();
+                String channelID = channelsID[index];
+                return HomeScreenYTB( channelID: channelID);
               },
-              childCount: 1,
+              childCount: channelsID.length,
             )
         ),
       ],

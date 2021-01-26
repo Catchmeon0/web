@@ -46,7 +46,10 @@ class PostContainerYoutube extends StatelessWidget {
           )
               : const SizedBox.shrink(),
           Text(channel.videos[0].thumbnailUrl != null
-              ? channel.videos[0].title :  Scaffold())
+              ? channel.videos[0].title :  Scaffold()
+          ,style:  const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),)
         ],
       ),
     );
@@ -166,7 +169,7 @@ class _PostStats extends StatelessWidget {
             _PostButton(
               icon: Icon(
                 MdiIcons.shareOutline,
-                color: Colors.grey[600],
+                color: Colors.red[600],
                 size: 25.0,
               ),
               label: 'Check the channel',
