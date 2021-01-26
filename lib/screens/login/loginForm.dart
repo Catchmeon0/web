@@ -11,49 +11,7 @@ import 'package:http/http.dart' as http;
 
 import '../screens.dart';
 final box = GetStorage();
-Future<UserModel> loginUser(
-    String username, String password, BuildContext context) async {
-  var Url = "http://localhost:8080/authenticate";
-  var response = await http.post(Url,
-      headers: <String, String>{
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(<String, String>{
-        "username": username,
-        "password": password,
-      }));
 
-  String responseString = response.body;
-  if (response.statusCode == 200) {
-    //
-    var parsedJson = JsonDecoder().convert(responseString);
-    String token = parsedJson['jwt'];
-    Provider.of<UserData>(context).currentUserId = parsedJson['id'];
-    String username = parsedJson['username'];
-    box.write("token", token);
-    box.write("username", username);
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext dialogContext) {
-        return MyAlertDialog(title: 'Backend Response ${box.read('token')}', content: response.body);
-      },
-    );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NavScreen()),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Welcome $username'),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {},
-      ),
-    ));
-  }
-}
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -65,6 +23,51 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+
+  Future<UserModel> loginUser(
+      String username, String password, BuildContext context) async {
+    var Url = "http://localhost:8080/authenticate";
+    var response = await http.post(Url,
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(<String, String>{
+          "username": username,
+          "password": password,
+        }));
+
+    String responseString = response.body;
+    if (response.statusCode == 200) {
+      //
+      var parsedJson = JsonDecoder().convert(responseString);
+      String token = parsedJson['jwt'];
+      String userID = parsedJson['id'];
+      box.write("currentUserId", userID);
+      String username = parsedJson['username'];
+      box.write("token", token);
+      box.write("username", username);
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext dialogContext) {
+          return MyAlertDialog(title: 'Backend Response ${box.read('token')}', content: response.body);
+        },
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NavScreen()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Welcome $username'),
+        duration: const Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {},
+        ),
+      ));
+    }
+  }
   UserModel userModel;
 
   TextEditingController usernameController = TextEditingController();

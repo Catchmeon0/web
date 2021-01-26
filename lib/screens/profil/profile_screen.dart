@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/user_data.dart';
+import 'package:web/screens/login/loginForm.dart';
 import 'package:web/services/auth_service.dart';
 import 'package:web/services/database_service.dart';
 import 'package:web/utilities/constants.dart';
@@ -99,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _displayButton(UserModel user) {
-    return user.id == Provider.of<UserData>(context).currentUserId
+    return user.id == box.read("currentUserId")
         ? Container(
       width: 200.0,
       child: FlatButton(
@@ -262,28 +263,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return Container(child: Text(snapshot.error.toString()));
                 // Completed with data
                 if (snapshot.hasData) {
-
-                  print('*********************************');
-                  print(usersRef.doc(widget.userId));
-                  print(snapshot.data.data());
                   UserModel user = UserModel.fromDoc(snapshot.data);
+                  return ListView(
+                    children: <Widget>[
+                      _buildProfileInfo(user),
+                      Divider(),
+                    ],
+                  );
+                }else
+                  return
+                    Center(child: CircularProgressIndicator());
 
-                }
-                return ListView(
-                  children: <Widget>[
-                    // _buildProfileInfo(user),
-                    Divider(),
-                  ],
-                );
+
           }
-          // UserModel user = UserModel.fromDoc(snapshot.data);
-          // return ListView(
-          //   children: <Widget>[
-          //     // _buildProfileInfo(user),
-          //     Divider(),
-          //   ],
-          // );
-
         },
       ),
     );

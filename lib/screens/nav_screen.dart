@@ -8,24 +8,24 @@ import 'package:web/widgets/widgets.dart';
 
 import 'homeTwetter/tweet_screen.dart';
 import 'homeYoutube/youtube_screen.dart';
+import 'login/loginForm.dart';
 
-class   NavScreen extends StatefulWidget {
+class NavScreen extends StatefulWidget {
   @override
   _NavScreenState createState() => _NavScreenState();
 }
 
 class _NavScreenState extends State<NavScreen> {
-  // final String currentUserId = Provider.of<UserData>(context).currentUserId;
+  final String currentUserId = box.read("currentUserId");
   final List<Widget> _screens = [
     HomeScreen(),
     ProfileScreen(
-      currentUserId: 'FaK5QZTdt85cUzhEMmSY',
-      userId: 'aaa',
+      currentUserId: box.read("currentUserId"),
+      userId: box.read("currentUserId"),
     ),
     Scaffold(),
     HomeScreenTweets(),
     HomeScreenYoutube(),
-
   ];
   final List<IconData> _icons = const [
     Icons.home,
@@ -43,27 +43,23 @@ class _NavScreenState extends State<NavScreen> {
         child: Scaffold(
           appBar: Responsive.isDesktop(context)
               ? PreferredSize(
-            preferredSize: Size(screenSize.width, 100.0),
-            child: CustomAppBar(
-              currentUser: currentUser,
-              icons: _icons,
-              selectedIndex: _selectedIndex,
-              onTap: (index) =>
-                  setState(() => _selectedIndex = index
+                  preferredSize: Size(screenSize.width, 100.0),
+                  child: CustomAppBar(
+                    currentUser: currentUser,
+                    icons: _icons,
+                    selectedIndex: _selectedIndex,
+                    onTap: (index) => setState(() => _selectedIndex = index),
                   ),
-            ),
-
-          )
+                )
               : null,
           body: _screens[_selectedIndex],
-          bottomNavigationBar: !Responsive.isDesktop(context) ? CustomTabBar(
-            icons: _icons,
-            selectedIndex: _selectedIndex,
-            onTap: (index) =>
-                setState(() => _selectedIndex = index
-                ),
-          ) : const SizedBox.shrink(),
-        )
-    );
+          bottomNavigationBar: !Responsive.isDesktop(context)
+              ? CustomTabBar(
+                  icons: _icons,
+                  selectedIndex: _selectedIndex,
+                  onTap: (index) => setState(() => _selectedIndex = index),
+                )
+              : const SizedBox.shrink(),
+        ));
   }
 }
