@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
+import 'package:web/models/user_data.dart';
 import 'package:web/screens/login/signupForm.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +28,7 @@ Future<UserModel> loginUser(
     //
     var parsedJson = JsonDecoder().convert(responseString);
     String token = parsedJson['jwt'];
-
+    Provider.of<UserData>(context).currentUserId = parsedJson['id'];
     box.write("token", token);
 
     showDialog(

@@ -14,9 +14,13 @@ class   NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
+  // final String currentUserId = Provider.of<UserData>(context).currentUserId;
   final List<Widget> _screens = [
     HomeScreen(),
-    ProfileScreen(),
+    ProfileScreen(
+      currentUserId: 'FaK5QZTdt85cUzhEMmSY',
+      userId: 'aaa',
+    ),
     Scaffold(),
     HomeScreenTweets(),
   ];
