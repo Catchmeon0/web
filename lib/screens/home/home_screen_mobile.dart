@@ -4,6 +4,7 @@ import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
 import 'package:web/models/models.dart';
 import 'package:web/screens/login/logscreen.dart';
+import 'package:web/screens/search/search_screen.dart';
 import 'package:web/widgets/widgets.dart';
 
 class HomeScreenMobile extends StatelessWidget {
@@ -47,7 +48,10 @@ class HomeScreenMobile extends StatelessWidget {
             CircleButton(
               icon: Icons.search,
               iconSize: 30.0,
-              onPressed: () => print('search'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchScreen()),
+              ),
             ),
             CircleButton(
               icon: MdiIcons.instagram,

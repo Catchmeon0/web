@@ -11,6 +11,12 @@ class DatabaseService {
     });
   }
 
+  static Future<QuerySnapshot> searchUsers(String name) {
+    Future<QuerySnapshot> users =
+    usersRef.where('name', isGreaterThanOrEqualTo: name).getDocuments();
+    return users;
+  }
+
   static Future<bool> isFollowingUser(
       {String currentUserId, String userId}) async {
     DocumentSnapshot followingDoc = await followersRef
