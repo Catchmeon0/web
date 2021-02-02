@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/user_data.dart';
 import 'package:web/screens/login/loginForm.dart';
+import 'package:web/screens/login/logscreen.dart';
 import 'package:web/services/auth_service.dart';
 import 'package:web/services/database_service.dart';
 import 'package:web/utilities/constants.dart';
@@ -243,7 +244,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: AuthService.logout,
+            onPressed:  () =>  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AuthThreePage()),
+            ),
+            color: Colors.black,
           ),
         ],
       ),
