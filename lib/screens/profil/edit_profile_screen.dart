@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/services/database_service.dart';
 import 'package:web/services/storage_service.dart';
@@ -21,12 +22,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   File _profileImage;
   String _name = '';
+  String _userTwitter='';
+  String _userYoutube='';
+
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     _name = widget.user.name;
+    _userTwitter=widget.user.userTwitter;
+    _userYoutube=widget.user.userYoutube;
     // _bio = widget.user.bio;
   }
 
@@ -79,8 +85,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       UserModel user = UserModel(
         id: widget.user.id,
         name: _name,
+        userTwitter: _userTwitter,
+        userYoutube: _userYoutube,
         profileImageUrl: _profileImageUrl,
       );
+
       // Database update
       DatabaseService.updateUser(user);
 
@@ -145,6 +154,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ? 'Please enter a valid name'
                           : null,
                       onSaved: (input) => _name = input,
+                    ),
+                    TextFormField(
+                      initialValue: _userTwitter,
+                      style: TextStyle(fontSize: 18.0),
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          MdiIcons.twitter,
+                          size: 30.0,
+                        ),
+                        labelText: 'Your Twitter',
+                      ),
+                      validator: (input) => input.trim().length < 1
+                          ? 'Please enter a valid Twitter @'
+                          : null,
+                      onSaved: (input) => _userTwitter = input,
+                    ),
+                    TextFormField(
+                      initialValue: _userYoutube,
+                      style: TextStyle(fontSize: 18.0),
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          MdiIcons.youtube,
+                          size: 30.0,
+                        ),
+                        labelText: 'Your Youtube',
+                      ),
+                      validator: (input) => input.trim().length < 1
+                          ? 'Please enter a valid Youtube channel name '
+                          : null,
+                      onSaved: (input) => _userYoutube = input,
                     ),
                     Container(
                       margin: EdgeInsets.all(40.0),
