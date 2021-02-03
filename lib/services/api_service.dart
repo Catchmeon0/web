@@ -82,4 +82,35 @@ class APIService {
     }
   }
 
+  Future<String> getlistchannelIDfromUserFollowedUsers(String userYoutubeChannelName) async{
+
+    Map<String, String> parameters = {
+      'key': API_YOUTUBE_KEY,
+      'part': "snippet",
+      'maxResults': "1",
+      'q': userYoutubeChannelName,
+      'type': "channel",
+    };
+    Uri uri = Uri.https(
+      _baseUrl,
+      '/youtube/v3/search',
+      parameters,
+    );
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    // Get Channel
+    var response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body)['items'][0];
+      //print(data);
+      String  _channelId =  data["id"]["channelId"];
+     // print(_channelId);
+
+      return _channelId;
+    } else {
+      throw json.decode(response.body)['error']['message'];
+    }
+  }
+
 }
