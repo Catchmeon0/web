@@ -13,7 +13,7 @@ class HomeScreenDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Flexible(
+        Flexible  (
           flex: 2,
           child: Container(
             color: Colors.grey[100],

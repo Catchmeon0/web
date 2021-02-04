@@ -112,5 +112,4 @@ class APIService {
       throw json.decode(response.body)['error']['message'];
     }
   }
-
 }

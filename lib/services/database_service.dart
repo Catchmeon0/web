@@ -138,4 +138,22 @@ class DatabaseService {
     print(result);
     return result;
   }
+
+  getUserChannelNameFromUserID(String userId) async {
+    DocumentSnapshot listYoutubeChannel =
+    await usersRef.doc(userId).get();
+    var userChannelName = listYoutubeChannel.data()["userYoutube"];
+
+    return userChannelName;
+
+  }
+
+
+  getUserTweetScreenNameFromUserID(String userId) async {
+    DocumentSnapshot listYoutubeChannel =
+    await usersRef.doc(userId).get();
+    var userChannelName = listYoutubeChannel.data()["userTwitter"];
+
+    return userChannelName;
+  }
 }
