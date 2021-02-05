@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web/models/UserModel.dart';
+import 'package:web/models/activity_model.dart';
 import 'package:web/utilities/constants.dart';
 
 class DatabaseService {
@@ -162,4 +163,28 @@ class DatabaseService {
 
     return userChannelName;
   }
+
+  static void addActivityItem(
+      {String currentUserId, String userId}) {
+    if (currentUserId != userId) {
+      activitiesRef.doc(userId).collection('userActivities').add({
+        'fromUserId': currentUserId,
+        'timestamp': Timestamp.fromDate(DateTime.now()),
+      });
+    }
+  }
+
+  static Future<List<Activity>> getActivities(String userId) async {
+    print('adding an activity');
+    QuerySnapshot userActivitiesSnapshot = await activitiesRef
+        .doc(userId)
+        .collection('userActivities')
+        .orderBy('timestamp', descending: true)
+        .get();
+    List<Activity> activity = userActivitiesSnapshot.docs
+        .map((doc) => Activity.fromDoc(doc))
+        .toList();
+    return activity;
+  }
+
 }
