@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:web/data/data.dart';
+import 'package:web/screens/activity/activity_screen.dart';
 import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/screens/screens.dart';
 import 'package:web/widgets/custom_app_bar.dart';
@@ -23,12 +24,14 @@ class _NavScreenState extends State<NavScreen> {
       currentUserId: box.read("currentUserId"),
       userId: box.read("currentUserId"),
     ),
+    ActivityScreen(currentUserId: box.read("currentUserId")),
     HomeScreenTweets(),
     HomeScreenYoutube(),
   ];
   final List<IconData> _icons = const [
     Icons.home,
     MdiIcons.accountCircleOutline,
+    MdiIcons.heart,
     MdiIcons.twitter,
     MdiIcons.youtube,
   ];
