@@ -77,6 +77,7 @@ class DatabaseService {
     _usersRef.doc(currentUserId).update({
       'userFollowed': FieldValue.arrayUnion([userId]),
     });
+    addActivityItem(currentUserId: currentUserId, userId:userId);
   }
 
   static void unfollowUser({String currentUserId, String userId}) {
