@@ -20,9 +20,20 @@ class DatabaseService {
     });
   }
 
-  static Future<QuerySnapshot> searchUsers(String name) {
-    Future<QuerySnapshot> users =
-    usersRef.where('name', isGreaterThanOrEqualTo: name).getDocuments();
+  static Future<QuerySnapshot> searchUsers(String name, String platform) {
+    Future<QuerySnapshot> users;
+  String _platform = platform.toLowerCase();
+   if(_platform == "youtube"){
+      users =
+          usersRef.where('userYoutube', isGreaterThanOrEqualTo: name).get();
+
+    }else if(_platform == "twitter"){
+      users =
+          usersRef.where('userTwitter', isGreaterThanOrEqualTo: name).get();
+    } else
+     users =
+         usersRef.where('name', isGreaterThanOrEqualTo: name).get();
+
     return users;
   }
 
