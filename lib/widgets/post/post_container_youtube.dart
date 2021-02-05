@@ -4,12 +4,59 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:web/config/palette.dart';
 import 'package:web/models/channel_model.dart';
 import 'package:web/models/channel_model.dart';
+import 'package:web/models/video_model.dart';
 import 'package:web/widgets/profile_avatar.dart';
 import 'dart:js' as js;
-class PostContainerYoutube extends StatelessWidget {
+
+class PostContainerYoutube extends StatefulWidget {
   final Channel channel;
 
-  const PostContainerYoutube({Key key, @required this.channel}) : super(key: key);
+  const PostContainerYoutube({Key key, @required this.channel})
+      : super(key: key);
+
+  @override
+  _PostContainerYoutubeState createState() => _PostContainerYoutubeState();
+}
+
+class _PostContainerYoutubeState extends State<PostContainerYoutube> {
+  _buildVideo(Video video) {
+    return GestureDetector(
+      onTap: () => {},
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+        padding: EdgeInsets.all(10.0),
+        height: 140.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 1),
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: <Widget>[
+            Image(
+              width: 150.0,
+              image: NetworkImage(video.thumbnailUrl),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: Text(
+                video.title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,32 +71,33 @@ class PostContainerYoutube extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _PostHeader(channel: channel),
+                _PostHeader(channel: widget.channel),
                 const SizedBox(height: 4.0),
-              //  Text(channel.title),
+                //  Text(channel.title),
                 /*channel.profilePictureUrl != null
                     ? const SizedBox.shrink()
                     : const SizedBox(
                   height: 6.0,
                 ),*/
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: _PostStats(channel: channel),
-                ),
               ],
             ),
           ),
-          channel.videos[0].thumbnailUrl != null
+          /*  widget.channel.videos[0].thumbnailUrl != null
               ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: CachedNetworkImage(imageUrl: channel.videos[0].thumbnailUrl),
+            child: CachedNetworkImage(imageUrl: widget.channel.videos[0].thumbnailUrl),
           )
-              : const SizedBox.shrink(),
-          Text(channel.videos[0].thumbnailUrl != null
+              : const SizedBox.shrink(),*/
+          /*   Text(widget.channel.videos[0].thumbnailUrl != null
               ? channel.videos[0].title :  Scaffold()
           ,style:  const TextStyle(
                 fontWeight: FontWeight.w600,
-              ),)
+              ),)*/
+          _buildVideo(widget.channel.videos[0]),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: _PostStats(channel: widget.channel),
+          ),
         ],
       ),
     );
@@ -79,7 +127,7 @@ class _PostHeader extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-        /*      Row(
+              /*      Row(
                 children: [
                   Text(
                     '${channel.subscriberCount}',
@@ -127,55 +175,20 @@ class _PostStats extends StatelessWidget {
       children: [
         Row(
           children: [
-/*            Container(
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                color: Palette.facebookBlue,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.thumb_up,
-                size: 10.0,
-                color: Colors.white,
-              ),
-            ),*/
-            const SizedBox(width: 4.0),
-          /*  Expanded(
-              child: Text(
-                '${channel.likes}',
-                style: TextStyle(
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),*/
-/*            Text(
-              '${channel.comments} Comments',
-              style: TextStyle(
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(width: 8.0),
-            Text(
-              '${channel.shares} Shares',
-              style: TextStyle(
-                color: Colors.grey[600],
-              ),
-            )*/
-          ],
-        ),
-        const Divider(),
-        Row(
-          children: [
             _PostButton(
               icon: Icon(
                 MdiIcons.shareOutline,
                 color: Colors.red[600],
                 size: 25.0,
               ),
-              label: 'Check the channel',
-              onTap: () {print('check the video');
+              label: 'Check the video',
+              onTap: () {
+                print('check the video');
 
-    js.context.callMethod('open', ['https://www.youtube.com/watch?v=${channel.videos[0].id}']);},
+                js.context.callMethod('open', [
+                  'https://www.youtube.com/watch?v=${channel.videos[0].id}'
+                ]);
+              },
             )
           ],
         ),
@@ -207,7 +220,6 @@ class _PostButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             height: 25.0,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 icon,
                 const SizedBox(width: 4.0),

@@ -10,7 +10,6 @@ class HomeScreenYTB extends StatefulWidget {
   const HomeScreenYTB({Key key, @required  this.channelID})
       : super(key: key);
 
-
   @override
   _HomeScreenYTBState createState() => _HomeScreenYTBState();
 }
@@ -18,17 +17,11 @@ class HomeScreenYTB extends StatefulWidget {
 class _HomeScreenYTBState extends State<HomeScreenYTB> {
   Channel _channel;
   bool _isLoading = false;
-
-
-
-
-
   @override
   void initState() {
     super.initState();
     _initChannel();
   }
-
   _initChannel() async {
     Channel channel = await APIService.instance
         .fetchChannel(channelId: widget.channelID);
@@ -36,7 +29,6 @@ class _HomeScreenYTBState extends State<HomeScreenYTB> {
       _channel = channel;
     });
   }
-
   _buildProfileInfo() {
     return Container(
       margin: EdgeInsets.all(20.0),
@@ -145,12 +137,11 @@ class _HomeScreenYTBState extends State<HomeScreenYTB> {
     });
     _isLoading = false;
   }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200.0,
-      height:  MediaQuery.of(context).size.width,
+      width: 100.0,
+      //height:  MediaQuery.of(context).size.width,
       child: Container(
 
 
@@ -161,7 +152,7 @@ class _HomeScreenYTBState extends State<HomeScreenYTB> {
                       _channel.videos.length != int.parse(_channel.videoCount) &&
                       scrollDetails.metrics.pixels ==
                           scrollDetails.metrics.maxScrollExtent) {
-                    _loadMoreVideos();
+                    //_loadMoreVideos();
                   }
                   return false;
                 },

@@ -213,13 +213,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Padding(
           padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
           child: Row(
+
             children: <Widget>[
-              CircleAvatar(
-                radius: 50.0,
-                backgroundColor: Colors.grey,
-                backgroundImage: user.profileImageUrl.isEmpty
-                    ? AssetImage('assets/images/user_placeholder.jpg')
-                    : CachedNetworkImageProvider(user.profileImageUrl),
+              Container(
+                margin:
+                EdgeInsets.only(left: 40.0, top: 8.0, bottom: 8.0, right: 12.0),
+
+                child: CircleAvatar(
+                  radius: 50.0,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: user.profileImageUrl.isEmpty
+                      ? AssetImage('assets/images/user_placeholder.jpg')
+                      : CachedNetworkImageProvider(user.profileImageUrl),
+                ),
               ),
               Expanded(
                 child: Column(
@@ -271,11 +277,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                user.name,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+              Container(
+                margin : EdgeInsets.only(left: 40.0, top: 8.0, bottom: 8.0, right: 12.0),
+                child: Text(
+                  user.name,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: 5.0),
@@ -307,11 +316,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 !_isLoading
                     ? PostContainerYoutube(channel: _channel)
-                    : CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor, // Red
+                    : Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor, // Red
+                    ),
                   ),
-
                 ),
 
               ],
