@@ -11,7 +11,6 @@ class APIService {
   static final APIService instance = APIService._instantiate();
 
   final String _baseUrl = 'www.googleapis.com';
-  String _nextPageToken = '';
 
   Future<Channel> fetchChannel({String channelId}) async {
     Map<String, String> parameters = {
@@ -48,8 +47,7 @@ class APIService {
     Map<String, String> parameters = {
       'part': 'snippet',
       'playlistId': playlistId,
-      'maxResults': '8',
-      'pageToken': _nextPageToken,
+      'maxResults': '1',
       'key': API_YOUTUBE_KEY,
     };
     Uri uri = Uri.https(
@@ -65,8 +63,6 @@ class APIService {
     var response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-
-      _nextPageToken = data['nextPageToken'] ?? '';
       List<dynamic> videosJson = data['items'];
 
       // Fetch first eight videos from uploads playlist
@@ -82,8 +78,8 @@ class APIService {
     }
   }
 
-  Future<String> getlistchannelIDfromUserFollowedUsers(String userYoutubeChannelName) async{
-
+  Future<String> getlistchannelIDfromUserFollowedUsers(
+      String userYoutubeChannelName) async {
     Map<String, String> parameters = {
       'key': API_YOUTUBE_KEY,
       'part': "snippet",
@@ -104,8 +100,8 @@ class APIService {
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body)['items'][0];
       //print(data);
-      String  _channelId =  data["id"]["channelId"];
-     // print(_channelId);
+      String _channelId = data["id"]["channelId"];
+      // print(_channelId);
 
       return _channelId;
     } else {
