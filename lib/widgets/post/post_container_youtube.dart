@@ -61,9 +61,14 @@ class _PostContainerYoutubeState extends State<PostContainerYoutube> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        border: Border.all(width: 0.6, color: Colors.redAccent[400]),
+        color: Colors.white,
+      ),
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      color: Colors.white,
+
       child: Column(
         children: [
           Padding(
@@ -73,26 +78,10 @@ class _PostContainerYoutubeState extends State<PostContainerYoutube> {
               children: [
                 _PostHeader(channel: widget.channel),
                 const SizedBox(height: 4.0),
-                //  Text(channel.title),
-                /*channel.profilePictureUrl != null
-                    ? const SizedBox.shrink()
-                    : const SizedBox(
-                  height: 6.0,
-                ),*/
               ],
             ),
           ),
-          /*  widget.channel.videos[0].thumbnailUrl != null
-              ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: CachedNetworkImage(imageUrl: widget.channel.videos[0].thumbnailUrl),
-          )
-              : const SizedBox.shrink(),*/
-          /*   Text(widget.channel.videos[0].thumbnailUrl != null
-              ? channel.videos[0].title :  Scaffold()
-          ,style:  const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),)*/
+
           _buildVideo(widget.channel.videos[0]),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -127,19 +116,6 @@ class _PostHeader extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              /*      Row(
-                children: [
-                  Text(
-                    '${channel.subscriberCount}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12.0),
-                  ),
-                  Icon(
-                    MdiIcons.youtubeSubscription,
-                    color: Colors.red[600],
-                    size: 12.0,
-                  ),
-                ],
-              )*/
             ],
           ),
         ),

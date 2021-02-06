@@ -301,20 +301,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
 
-                ),
-                !_isloadingTweet
+                !_isloadingTweet && !_isLoading
                     ? EmbeddedTweetView.fromTweet(
                   Tweet.fromJson(box.read("OwnTweetStatus")),
                 )
-                    : CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor, // Red
+                    : Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor, // Red
+                    ),
                   ),
                 ),
 
-                !_isLoading
+                !_isLoading && !_isloadingTweet
                     ? PostContainerYoutube(channel: _channel)
                     : Center(
                   child: CircularProgressIndicator(
