@@ -109,6 +109,7 @@ class DatabaseService {
     _usersRef.doc(currentUserId).update({
       'userFollowed': FieldValue.arrayRemove([userId]),
     });
+    removeActivityItem(currentUserId: currentUserId, userId:userId);
   }
 
   listofYoutubefromFollowedUsers(String currentUserId) async {
@@ -175,6 +176,25 @@ class DatabaseService {
     }
   }
 
+  static void removeActivityItem(
+      {String currentUserId, String userId}) {
+    if (currentUserId != userId) {
+      activitiesRef.doc(userId)
+          .collection('userActivities')
+          .where('fromUserId',isEqualTo: currentUserId)
+          .get().then((value) =>
+      {
+        value.docs.forEach((element) {
+          activitiesRef.doc(userId)
+              .collection('userActivities')
+              .doc(element.id)
+              .delete().then((value) => print("deleted activity with Success!"));
+        })
+      });
+
+    }
+  }
+
   static Future<List<Activity>> getActivities(String userId) async {
     print('adding an activity');
     QuerySnapshot userActivitiesSnapshot = await activitiesRef
@@ -182,6 +202,8 @@ class DatabaseService {
         .collection('userActivities')
         .orderBy('timestamp', descending: true)
         .get();
+
+    print(userActivitiesSnapshot);
     List<Activity> activity = userActivitiesSnapshot.docs
         .map((doc) => Activity.fromDoc(doc))
         .toList();
