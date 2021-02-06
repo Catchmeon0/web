@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web/models/UserModel.dart';
+import 'package:web/models/activity_model.dart';
 import 'package:web/utilities/constants.dart';
 
 class DatabaseService {
@@ -87,6 +88,7 @@ class DatabaseService {
     _usersRef.doc(currentUserId).update({
       'userFollowed': FieldValue.arrayUnion([userId]),
     });
+    addActivityItem(currentUserId: currentUserId, userId:userId);
   }
 
   static void unfollowUser({String currentUserId, String userId}) {
@@ -118,6 +120,7 @@ class DatabaseService {
     _usersRef.doc(currentUserId).update({
       'userFollowed': FieldValue.arrayRemove([userId]),
     });
+    removeActivityItem(currentUserId: currentUserId, userId:userId);
   }
 
   listofYoutubefromFollowedUsers(String currentUserId) async {
@@ -173,4 +176,49 @@ class DatabaseService {
 
     return userChannelName;
   }
+
+  static void addActivityItem(
+      {String currentUserId, String userId}) {
+    if (currentUserId != userId) {
+      activitiesRef.doc(userId).collection('userActivities').add({
+        'fromUserId': currentUserId,
+        'timestamp': Timestamp.fromDate(DateTime.now()),
+      });
+    }
+  }
+
+  static void removeActivityItem(
+      {String currentUserId, String userId}) {
+    if (currentUserId != userId) {
+      activitiesRef.doc(userId)
+          .collection('userActivities')
+          .where('fromUserId',isEqualTo: currentUserId)
+          .get().then((value) =>
+      {
+        value.docs.forEach((element) {
+          activitiesRef.doc(userId)
+              .collection('userActivities')
+              .doc(element.id)
+              .delete().then((value) => print("deleted activity with Success!"));
+        })
+      });
+
+    }
+  }
+
+  static Future<List<Activity>> getActivities(String userId) async {
+    print('adding an activity');
+    QuerySnapshot userActivitiesSnapshot = await activitiesRef
+        .doc(userId)
+        .collection('userActivities')
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    print(userActivitiesSnapshot);
+    List<Activity> activity = userActivitiesSnapshot.docs
+        .map((doc) => Activity.fromDoc(doc))
+        .toList();
+    return activity;
+  }
+
 }
