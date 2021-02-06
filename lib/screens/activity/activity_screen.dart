@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/activity_model.dart';
-import 'package:web/models/user_data.dart';
+import 'package:web/screens/login/loginForm.dart';
+import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/services/database_service.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -51,11 +51,20 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 ? AssetImage('assets/images/user_placeholder.jpg')
                 : CachedNetworkImageProvider(user.profileImageUrl),
           ),
-          title: activity.id != null
+          title: activity.fromUserId != null
               ? Text('${user.name} started catching you')
               : () {},
           subtitle: Text(
             DateFormat.yMd().add_jm().format(activity.timestamp.toDate()),
+          ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProfileScreen(
+                currentUserId: box.read("currentUserId"),
+                userId: user.id,
+              ),
+            ),
           ),
         );
       },
