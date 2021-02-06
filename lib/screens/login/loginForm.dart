@@ -37,6 +37,19 @@ class _LoginFormState extends State<LoginForm> {
         }));
 
     String responseString = response.body;
+
+    if(response.statusCode!= 200){
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext dialogContext) {
+          return MyAlertDialog(
+              title: "Login Failed",
+              content: "username or password incorrect");
+        },
+      );
+
+    }
     if (response.statusCode == 200) {
       //
       var parsedJson = JsonDecoder().convert(responseString);
