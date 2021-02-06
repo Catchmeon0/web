@@ -301,9 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
 
-                ),
                 !_isloadingTweet && !_isLoading
                     ? EmbeddedTweetView.fromTweet(
                   Tweet.fromJson(box.read("OwnTweetStatus")),
