@@ -100,7 +100,7 @@ class _PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return channel != null ?Row(
       children: [
         ProfileAvatar(imageUrl: channel.profilePictureUrl),
         const SizedBox(
@@ -133,7 +133,7 @@ class _PostHeader extends StatelessWidget {
           ],
         )
       ],
-    );
+    ) : Scaffold();
   }
 }
 

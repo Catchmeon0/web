@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:tweet_ui/embedded_tweet_view.dart';
 import 'package:tweet_ui/models/api/tweet.dart';
@@ -38,7 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Channel _channel;
   bool _isLoading;
   bool _isloadingTweet;
-
+  bool _isTwitterLinked;
+  bool _isYoutubeLinked;
   @override
   void initState() {
     super.initState();
@@ -50,10 +52,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _setupProfileUser();
     _initChannel();
     loadOwnTweetJSON();
+     _isTwitterLinked = false;
+     _isYoutubeLinked = false;
+    _verifieYoutubeAndTwitter();
   }
 
+  _verifieYoutubeAndTwitter()async{
+    var twitter = await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
+    var youtube = await DatabaseService().getUserChannelNameFromUserID(widget.userId);
+    setState(() {
+      if (youtube == "") {
+        _isYoutubeLinked = false;
+
+      }else  _isYoutubeLinked = true;
+      if (twitter == "") {
+        _isTwitterLinked = false;
+      }else         _isTwitterLinked = true;
+
+    });
+  }
   Future<dynamic> loadOwnTweetJSON() async {
-    _isloadingTweet = false;
+    _isloadingTweet = true;
     String token = "Bearer " + box.read("token");
     String userScreenName =
         await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
@@ -72,16 +91,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (response.statusCode == 200) {
       String responseString = response.body;
       var parsedJson = JsonDecoder().convert(responseString);
-
        var data = JsonDecoder().convert(response.body);
       box.write("OwnTweetStatus", data);
 
-     // print(box.read("OwnTweetStatus"));
+     print(box.read("OwnTweetStatus"));
 
       setState(() {
         _isloadingTweet = false;
       });
     }
+
   }
 
   _initChannel() async {
@@ -301,8 +320,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                _isTwitterLinked? Container(
 
-                !_isloadingTweet && !_isLoading
+                  child: !_isloadingTweet && !_isLoading
                     ? EmbeddedTweetView.fromTweet(
                   Tweet.fromJson(box.read("OwnTweetStatus")),
                 )
@@ -312,9 +332,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Theme.of(context).primaryColor, // Red
                     ),
                   ),
-                ),
+                ),) : Text("Your Twitter account isn't linked!"),
 
-                !_isLoading && !_isloadingTweet
+                _isYoutubeLinked? Container(
+                child:  !_isLoading && !_isloadingTweet
                     ? PostContainerYoutube(channel: _channel)
                     : Center(
                   child: CircularProgressIndicator(
@@ -322,7 +343,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Theme.of(context).primaryColor, // Red
                     ),
                   ),
-                ),
+                ),):  Text("Your Youtube account isn't linked!"),
+
 
               ],
             ),
@@ -386,55 +408,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-/*
-  youtubeposteContainer() {
-    Channel userChannel;
-    userChannel = _channel;
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: Colors.red, width: 4, style: BorderStyle.solid)),
-          child:  !_isLoading
-                ? PostContainerYoutube(channel: userChannel)
-                : CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
-                    ),
-
-          ),
-        ),
-      ],
-    );
-  }
-
-  twitterPostContainer() {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: Colors.blue, width: 4, style: BorderStyle.solid)),
-          child: SizedBox(
-            width: 350,
-            height: 410,
-            child: !_isloadingTweet
-                ? EmbeddedTweetView.fromTweet(
-                    Tweet.fromJson(box.read("OwnTweetStatus")),
-                  )
-                : CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
-                    ),
-                  ),
-          ),
-        ),
-      ],
-    );
-  }*/
 }

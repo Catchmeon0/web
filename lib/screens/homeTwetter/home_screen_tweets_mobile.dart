@@ -6,6 +6,7 @@ import 'package:tweet_ui/embedded_tweet_view.dart';
 import 'package:tweet_ui/models/api/tweet.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/screens/login/logscreen.dart';
+import 'package:web/services/database_service.dart';
 import 'package:web/widgets/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:web/screens/login/loginForm.dart';
@@ -23,19 +24,26 @@ class HomeScreenTweetsnMobile extends StatefulWidget {
 
 class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
   bool loading;
+  bool hasFollowedSomeOne;
+  bool userFollowedHasTwitter;
 
   @override
   void initState() {
     super.initState();
     loading = true;
+    hasFollowedSomeOne = false;
+    userFollowedHasTwitter = false;
+
+    _hasFollowedSomeOne();
     loadTweetJSON();
+
   }
 
-  var tweet;
+
 
   Future<dynamic> loadTweetJSON() async {
     String token = "Bearer " + box.read("token");
-    String username = box.read("username");
+    String username = box.read("currentUserId");
 
     var Url =
         "http://localhost:8080/getTweetFromUser?userTwetterId=" + username;
@@ -63,10 +71,29 @@ class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
 
       setState(() {
         loading = false;
+        userFollowedHasTwitter = true;
+        if(parsedJson[0] == {})userFollowedHasTwitter = false;
+
+      });
+    }
+    else if(response.statusCode != 200){
+
+      setState(() {
+        userFollowedHasTwitter = false;
       });
     }
   }
+  
+  _hasFollowedSomeOne() async {
+   var  numFollowing = await DatabaseService().numFollowedUser(box.read("currentUserId"));
+   print(numFollowing);
+   if(numFollowing != 0 ) {
+     setState(() {
+       hasFollowedSomeOne = true;
+     });
+   }
 
+}
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -117,14 +144,17 @@ class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
+              if(hasFollowedSomeOne &&  userFollowedHasTwitter){
               return
               !loading
-                  ? EmbeddedTweetView.fromTweet(
+              ? EmbeddedTweetView.fromTweet(
                       Tweet.fromJson(box.read("tweet$index")))
-                  : LinearProgressIndicator();
+                  : LinearProgressIndicator();} else
+                    return !loading  ?Text("No tweet found"): LinearProgressIndicator();
             },
-            childCount: box.read("dataSize"),
-          ),
+            childCount:hasFollowedSomeOne &&  userFollowedHasTwitter ? box.read("dataSize"): 1,
+          ) ,
+
         ),
       ],
     );

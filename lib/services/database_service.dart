@@ -129,31 +129,22 @@ class DatabaseService {
     var _usersRef = __firestore.collection('user');
     DocumentSnapshot listYoutubeChannel =
         await _usersRef.doc(currentUserId).get();
-    List<dynamic> data = listYoutubeChannel.data()["userFollowed"];
-    for(int i = 0; i<data.length; i++){
-      DocumentSnapshot youtubeChannel = await usersRef.doc(data[i]).get();
 
-      if (youtubeChannel.exists) {
-        String _data = youtubeChannel.data()["userYoutube"];
-        if (_data.isNotEmpty) {
-          result.add(_data.toString());
-        }
-      }
+     if(listYoutubeChannel.exists){
+       List<dynamic> data = listYoutubeChannel.data()["userFollowed"];
+       for(int i = 0; i<data.length; i++){
+         DocumentSnapshot youtubeChannel = await usersRef.doc(data[i]).get();
+         if (youtubeChannel.exists) {
+           String _data = youtubeChannel.data()["userYoutube"];
 
-    }
- /*   var varx = data.forEach((element) async {
-      DocumentSnapshot youtubeChannel = await usersRef.doc(element).get();
-      if (youtubeChannel.exists) {
-        String _data = youtubeChannel.data()["userYoutube"];
-        print("databseservice");
-        print(_data);
-        if (_data.isNotEmpty) {
-          result.add(_data.toString());
-        }
-      }
-    });
-    print("databseservice");
-    print(result);*/
+           if (_data.isNotEmpty) {
+             result.add(_data);
+           }
+         }
+
+       }
+     }
+
     print("databseservice");
     print(result);
     return result;
@@ -219,6 +210,16 @@ class DatabaseService {
         .map((doc) => Activity.fromDoc(doc))
         .toList();
     return activity;
+  }
+
+  numFollowedUser(String CurrentUserID) async{
+    List<String> followedUserList;
+    QuerySnapshot followingSnapshot =
+        await followingRef.doc(CurrentUserID).collection('userFollowing').get();
+
+    return followingSnapshot.docs.length;
+
+
   }
 
 }

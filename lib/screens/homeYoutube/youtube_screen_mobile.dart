@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
+import 'package:web/models/channel_model.dart';
 import 'package:web/models/models.dart';
 import 'package:web/screens/login/loginForm.dart';
 import 'package:web/screens/login/logscreen.dart';
@@ -27,11 +28,10 @@ class HomeScreenYoutubeMobile extends StatefulWidget {
 }
 
 class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
-  final List<String> channelsID = ["UC2t5bjwHdUX4vM2g8TRDq5g","UCiRDO4sVx9dsyMm9F7eWMvw", "UCb3c6rB0Ru1i9EUcc-a5ZJw" ];
 
-  String userYoutubeChannelName="wa3errr";
-  String channel_id;
   bool _isLoading ;
+  bool _dataExiste;
+
 
 
   List<dynamic> _list;
@@ -39,49 +39,53 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
   void initState() {
     super.initState();
     _isLoading = false;
-
+    _dataExiste = false;
     _getListuserChannelYoutube();
   }
 
 
   _getListuserChannelYoutube() async{
-    print("_getlistuserchannel");
+
    List<String> list =  await DatabaseService().listofYoutubefromFollowedUsers(box.read("currentUserId")) ;
-   print(list);
-   print(box.read("currentUserId"));
+    box.write("_listSize", list.length);
    setState(() {
      if(list.isNotEmpty){
+       setState(() {
+         _dataExiste = true;
+       });
        _list= list;
        box.write("_list",list);
-       box.write("_listSize", list.length);
-       print("listsize");
-       print(box.read("_listSize"));
-
         for(int i = 0 ; i < box.read("_listSize"); i++ ){
           String channelID = box.read("_list")[i];
-          print(box.read("_list")[i]);
+          print("channelID--------");
+          print(channelID);
           _initChannel(i, channelID);
      }
 
+     }else {
+       setState(() {
+         _dataExiste = false;
+       });
+       box.write("channel_id0","UCaeEdy4_WOf4zkyHlwmYxbQ");
      }
 
    });
   }
 
-  _initChannel(int index, String userYoutubeChannelName) async {
-    print("_initChannel");
 
-  String _channelId = await APIService.instance
+
+  _initChannel(int index, String userYoutubeChannelName) async {
+    _isLoading = true;
+    dynamic _channelId = await APIService.instance
         .getlistchannelIDfromUserFollowedUsers(userYoutubeChannelName);
-  setState(() {
-      if(_channelId.isNotEmpty){
-        channel_id= _channelId;
-        box.write("channel_id$index",_channelId);
-        print(box.read("channel_id$index"));
-         _isLoading = false;
-      }else
-       _isLoading = true;
-    });
+    if (_channelId.isNotEmpty) {
+      setState(() {
+        if (_channelId != null) {
+          box.write("channel_id$index",_channelId);
+          _isLoading = false;
+        }
+      });
+    }
   }
 
   @override
@@ -142,15 +146,15 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
           ],
         ),
         SliverList(
-            delegate: SliverChildBuilderDelegate(
+            delegate:  _dataExiste ?SliverChildBuilderDelegate(
                   (context, index)
               {
 
-                return !_isLoading ? HomeScreenYTB( channelID: box.read("channel_id$index")) : LinearProgressIndicator();
+                return  HomeScreenYTB( channelID:  box.read("channel_id$index")) ;
               },
-              childCount: box.read("_listSize"),
-            )
-        ),
+              childCount:  box.read("_listSize"),
+            ) : SliverChildBuilderDelegate((context, index){return Text("No video found");},childCount: 1)
+        ) ,
       ],
     );
   }

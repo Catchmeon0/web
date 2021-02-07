@@ -55,22 +55,9 @@ class _SignupFormState extends State<SignupForm> {
       setState(() {
         loading = false;
       });
-   /*   if (response.statusCode == 400) {
-        String error =  JsonDecoder().convert(response.body)["error"]["message"];
-        if( error== "EMAIL_EXISTS") ;
-      }*/
-    /*  showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext dialogContext) {
-          return MyAlertDialog(
-              title: 'Backend Response', content: responseString);
-        },
-      );*/
-      Navigator.pop(context);
-
-
     }
+    else
+      loading = false;
   }
 
   @override

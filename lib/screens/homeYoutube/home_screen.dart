@@ -5,10 +5,9 @@ import 'package:web/services/api_service.dart';
 import 'package:web/widgets/widgets.dart';
 
 class HomeScreenYTB extends StatefulWidget {
-   final String channelID;
+  final String channelID;
 
-  const HomeScreenYTB({Key key, @required  this.channelID})
-      : super(key: key);
+  const HomeScreenYTB({Key key, @required this.channelID}) : super(key: key);
 
   @override
   _HomeScreenYTBState createState() => _HomeScreenYTBState();
@@ -17,18 +16,32 @@ class HomeScreenYTB extends StatefulWidget {
 class _HomeScreenYTBState extends State<HomeScreenYTB> {
   Channel _channel;
   bool _isLoading = false;
+  bool _noVideoFound;
+
   @override
   void initState() {
     super.initState();
+    _noVideoFound = true;
     _initChannel();
   }
+
   _initChannel() async {
-    Channel channel = await APIService.instance
-        .fetchChannel(channelId: widget.channelID);
+    Channel channel =
+        await APIService.instance.fetchChannel(channelId: widget.channelID);
+
     setState(() {
-      _channel = channel;
+
+      if (channel.videos.length != 0){
+        _noVideoFound = false;
+        _channel = channel;
+      }else {
+        _noVideoFound = true;
+        _channel = channel;
+      }
+
     });
   }
+
   _buildProfileInfo() {
     return Container(
       margin: EdgeInsets.all(20.0),
@@ -137,34 +150,23 @@ class _HomeScreenYTBState extends State<HomeScreenYTB> {
     });
     _isLoading = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100.0,
       //height:  MediaQuery.of(context).size.width,
       child: Container(
-
-
-        child: _channel != null
-            ? NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollDetails) {
-                  if (!_isLoading &&
-                      _channel.videos.length != int.parse(_channel.videoCount) &&
-                      scrollDetails.metrics.pixels ==
-                          scrollDetails.metrics.maxScrollExtent) {
-                    //_loadMoreVideos();
-                  }
-                  return false;
-                },
-                child: PostContainerYoutube(channel: _channel),
-
-              )
+        child: !_noVideoFound && _channel != null
+            ? PostContainerYoutube(channel: _channel)
             : Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor, // Red
-                  ),
-                ),
+                child:
+                    CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor, // Red
+                        ),
+                      )
+                    ,
               ),
       ),
     );

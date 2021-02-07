@@ -73,6 +73,12 @@ class APIService {
         ),
       );
       return videos;
+    } else if (response.statusCode != 200) {
+      String responseString = response.body;
+      var parsedJson = JsonDecoder().convert(responseString);
+      if (parsedJson["error"]["errors"][0]["reason"] == "playlistNotFound") {
+        return [];
+      }
     } else {
       throw json.decode(response.body)['error']['message'];
     }
