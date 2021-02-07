@@ -76,6 +76,10 @@ flutter:
      - assets/network/
      - assets/network/network1.jpg
      - assets/images/
+     - assets/images/CMO_CatchMeOn_white.png
+     - assets/images/CMO_CatchMeOn_black.png
+     - assets/images/CMO_black.png
+     - assets/images/CMO_white.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
