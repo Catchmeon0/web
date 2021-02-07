@@ -38,6 +38,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   _handleImageFromGallery() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    PickedFile selectedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    File imageFile = File(selectedFile.path);
     if (imageFile != null) {
       setState(() {
         _profileImage = imageFile;
