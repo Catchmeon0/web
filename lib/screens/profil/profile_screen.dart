@@ -332,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Theme.of(context).primaryColor, // Red
                     ),
                   ),
-                ),) : Text("Your Twitter account isn't linked!"),
+                ),) : Text("Twitter account isn't linked!"),
 
                 _isYoutubeLinked? Container(
                 child:  !_isLoading && !_isloadingTweet
@@ -343,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Theme.of(context).primaryColor, // Red
                     ),
                   ),
-                ),):  Text("Your Youtube account isn't linked!"),
+                ),):  Text("Youtube account isn't linked!"),
 
 
               ],

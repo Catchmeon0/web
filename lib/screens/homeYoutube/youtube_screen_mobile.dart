@@ -153,7 +153,7 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
                 return  HomeScreenYTB( channelID:  box.read("channel_id$index")) ;
               },
               childCount:  box.read("_listSize"),
-            ) : SliverChildBuilderDelegate((context, index){return Text("No video found");},childCount: 1)
+            ) : SliverChildBuilderDelegate((context, index){return Center(child : Text("No video found"));},childCount: 1)
         ) ,
       ],
     );

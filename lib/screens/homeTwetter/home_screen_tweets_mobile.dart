@@ -150,7 +150,7 @@ class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
               ? EmbeddedTweetView.fromTweet(
                       Tweet.fromJson(box.read("tweet$index")))
                   : LinearProgressIndicator();} else
-                    return !loading  ?Text("No tweet found"): LinearProgressIndicator();
+                    return !loading  ?Center(child: Text("No tweet found"),): LinearProgressIndicator();
             },
             childCount:hasFollowedSomeOne &&  userFollowedHasTwitter ? box.read("dataSize"): 1,
           ) ,
