@@ -13,6 +13,7 @@ import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
 import 'package:web/widgets/widgets.dart';
 
+import 'home_screen_tweets_desktop.dart';
 import 'home_screen_tweets_mobile.dart';
 
 class HomeScreenTweets extends StatefulWidget {
@@ -38,9 +39,9 @@ class _HomeScreenTweetsState extends State<HomeScreenTweets> {
         child: Scaffold(
           body: Responsive(
             mobile:
-            HomeScreenTweetsnMobile (scrollController: _trackingScrollController),
+            HomeScreenTweetsnMobile(scrollController: _trackingScrollController),
             desktop:
-            Scaffold(),
+            HomeScreenTweetsnDesktop (scrollController: _trackingScrollController),
           ),
         ),
       );
