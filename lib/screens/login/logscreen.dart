@@ -16,6 +16,8 @@ class AuthThreePage extends StatefulWidget {
 
 class _AuthThreePageState extends State<AuthThreePage> {
   final String backImg =  "assets/network/network1.jpg";
+  final String logo_cmo_catchMeOn_white =
+      "assets/images/CMO_CatchMeOn_white.png";
   bool formVisible;
   int _formsIndex;
 
@@ -41,76 +43,82 @@ class _AuthThreePageState extends State<AuthThreePage> {
               Container(
                 color: Colors.black54,
                 child: Column(
+              children: <Widget>[
+              const SizedBox(height: kToolbarHeight + 40),
+              Expanded(
+                flex: 10,
+                child: Column(
                   children: <Widget>[
-                    const SizedBox(height: kToolbarHeight + 40),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "CatchMeOn",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 30.0,
-                            ),
-                          ),
-                          const SizedBox(height: 10.0),
-                          Text(
-                            "You've got profiles all over the internet.\n CatchMeOn lets you catch them.",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 18.0,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        child: new Image.asset(
+                          logo_cmo_catchMeOn_white,
+                          height: 60.0,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text("Login"),
-                            onPressed: () {
-                              setState(() {
-                                formVisible = true;
-                                _formsIndex = 1;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.grey.shade700,
-                            textColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text("Signup"),
-                            onPressed: () {
-                              setState(() {
-                                formVisible = true;
-                                _formsIndex = 2;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                      ],
+                    Text(
+                      "You've got profiles all over the internet.\n CatchMeOn lets you catch them.",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 18.0,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40.0),
-                 // Sign up / in with google, for the future
-                    /*   OutlineButton.icon(
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: <Widget>[
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text("Login"),
+                        onPressed: () {
+                          setState(() {
+                            formVisible = true;
+                            _formsIndex = 1;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.grey.shade700,
+                        textColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text("Signup"),
+                        onPressed: () {
+                          setState(() {
+                            formVisible = true;
+                            _formsIndex = 2;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40.0),
+              // Sign up / in with google, for the future
+              /*   OutlineButton.icon(
                       borderSide: BorderSide(color: Colors.red),
                       color: Colors.red,
                       textColor: Colors.white,
@@ -121,9 +129,9 @@ class _AuthThreePageState extends State<AuthThreePage> {
                       label: Text("Continue with Google"),
                       onPressed: () {},
                     ),*/
-                    const SizedBox(height: 20.0),
-                  ],
-                ),
+              const SizedBox(height: 20.0),
+            ],
+          ),
               ),
               AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),

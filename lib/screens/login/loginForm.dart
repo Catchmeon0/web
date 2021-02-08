@@ -64,14 +64,7 @@ class _LoginFormState extends State<LoginForm> {
         context,
         MaterialPageRoute(builder: (context) => NavScreen()),
       );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Welcome $username'),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'Close',
-          onPressed: () {},
-        ),
-      ));
+
     }
   }
   UserModel userModel;
