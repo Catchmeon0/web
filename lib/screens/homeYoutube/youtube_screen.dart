@@ -14,16 +14,14 @@ import 'package:web/data/data.dart';
 import 'package:web/screens/homeYoutube/youtube_screen_mobile.dart';
 import 'package:web/widgets/widgets.dart';
 
-
 class HomeScreenYoutube extends StatefulWidget {
   @override
   _HomeScreenYoutubeState createState() => _HomeScreenYoutubeState();
 }
 
 class _HomeScreenYoutubeState extends State<HomeScreenYoutube> {
-
   final TrackingScrollController _trackingScrollController =
-  TrackingScrollController();
+      TrackingScrollController();
 
   @override
   void dispose() {
@@ -33,20 +31,14 @@ class _HomeScreenYoutubeState extends State<HomeScreenYoutube> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          body: Responsive(
-            mobile:
-            HomeScreenYoutubeMobile (scrollController: _trackingScrollController),
-            desktop:
-            Scaffold(),
-          ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Responsive(
+          mobile: Scaffold(),
+          desktop: Scaffold(),
         ),
-      );
-
-
+      ),
+    );
   }
 }
-
