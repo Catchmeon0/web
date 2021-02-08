@@ -172,9 +172,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         labelText: 'Your Twitter',
                       ),
-                      validator: (input) => input.trim().length < 1
-                          ? 'Please enter a valid Twitter @'
-                          : null,
                       onSaved: (input) => _userTwitter = input,
                     ),
                     TextFormField(
@@ -187,9 +184,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         labelText: 'Your Youtube',
                       ),
-                      validator: (input) => input.trim().length < 1
-                          ? 'Please enter a valid Youtube channel name '
-                          : null,
                       onSaved: (input) => _userYoutube = input,
                     ),
                     Container(
