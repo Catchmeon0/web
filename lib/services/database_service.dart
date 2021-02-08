@@ -222,4 +222,12 @@ class DatabaseService {
 
   }
 
+  currentUser( String userId)async{
+    DocumentSnapshot userDoc = await usersRef
+        .doc(userId)
+        .get();
+
+    UserModel user = UserModel.fromDoc(userDoc);
+    return user;
+  }
 }
