@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:web/config/palette.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/screens.dart';
 import 'package:web/screens/search/search_screen.dart';
 import 'package:web/widgets/widgets.dart';
 
@@ -82,6 +83,14 @@ class CustomAppBar extends StatelessWidget {
                 ),
 
                UserCard(user: currentUser),
+                CircleButton(
+                  icon: Icons.search,
+                  iconSize: 30.0,
+                  onPressed: () => {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AuthThreePage()),
+                  )},
+                ),
               ],
             ),
           ),
