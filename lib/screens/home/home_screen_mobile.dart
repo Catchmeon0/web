@@ -8,7 +8,6 @@ import 'package:web/models/models.dart';
 import 'package:web/screens/login/logscreen.dart';
 import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/screens/search/search_screen.dart';
-import 'package:web/widgets/custom_app_bar_mobile.dart';
 import 'package:web/widgets/widgets.dart';
 
 class HomeScreenMobile extends StatefulWidget {

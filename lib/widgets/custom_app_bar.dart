@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:web/config/palette.dart';
+import 'package:web/models/UserModel.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/search/search_screen.dart';
 import 'package:web/widgets/widgets.dart';
 
 class CustomAppBar extends StatelessWidget {
-  final User currentUser;
+  final UserModel currentUser;
   final List<IconData> icons;
   final int selectedIndex;
   final Function(int) onTap;
@@ -38,7 +40,8 @@ class CustomAppBar extends StatelessWidget {
         children: [
 
           Expanded(
-            child:  Text(
+            child:
+            /*Text(
               "CatchMeOn",
               style: const TextStyle(
                 color: Palette.catchMeOn_logo_Color,
@@ -46,7 +49,12 @@ class CustomAppBar extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 letterSpacing: -1.2,
               ),
-            ),
+            ),*/
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child :new Image.asset("assets/images/CMO_black.png")
+      )
+
           ),
           Container(
             height: double.infinity,
@@ -67,23 +75,12 @@ class CustomAppBar extends StatelessWidget {
                 CircleButton(
                   icon: Icons.search,
                   iconSize: 30.0,
-                  onPressed: () => print('search'),
+                  onPressed: () => {Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()),
+                  )},
                 ),
-                CircleButton(
-                  icon: MdiIcons.facebook,
-                  iconSize: 30.0,
-                  onPressed: () => print('facebook'),
-                ),
-                CircleButton(
-                  icon: MdiIcons.instagram,
-                  iconSize: 30.0,
-                  onPressed: () => print('instagram'),
-                ),
-                CircleButton(
-                  icon: MdiIcons.twitter,
-                  iconSize: 30.0,
-                  onPressed: () => print('twitter'),
-                ),
+
                UserCard(user: currentUser),
               ],
             ),
