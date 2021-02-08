@@ -212,6 +212,19 @@ class DatabaseService {
     return activity;
   }
 
+  static Future<List<UserModel>> getFollowingList(String userId) async {
+    QuerySnapshot usersSnapshot = await followingRef
+        .doc(userId)
+        .collection('userFollowing')
+        .get();
+
+    print(usersSnapshot);
+    List<UserModel> user = usersSnapshot.docs
+        .map((doc) => UserModel.fromDoc(doc))
+        .toList();
+    return user;
+  }
+
   numFollowedUser(String CurrentUserID) async{
     List<String> followedUserList;
     QuerySnapshot followingSnapshot =

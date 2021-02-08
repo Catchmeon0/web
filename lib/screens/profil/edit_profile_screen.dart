@@ -1,12 +1,14 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/services/database_service.dart';
-import 'package:web/services/storage_service.dart';
+import 'dart:html' as html;
+import 'package:path/path.dart' as Path;
 
 class EditProfileScreen extends StatefulWidget {
   final UserModel user;
@@ -20,12 +22,17 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  File _profileImage;
+  html.File _profileImage;
   String _name = '';
   String _userTwitter='';
   String _userYoutube='';
 
+  Image pickedImage;
+  html.File _cloudFile;
+  var _fileBytes;
+  Image _imageWidget;
   bool _isLoading = false;
+  MediaInfo _mediaData;
 
   @override
   void initState() {
@@ -37,10 +44,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _handleImageFromGallery() async {
-    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (imageFile != null) {
+
+    _mediaData = await ImagePickerWeb.getImageInfo;
+    String mimeType = mime(Path.basename(_mediaData.fileName));
+    html.File mediaFile =
+    new html.File(_mediaData.data, _mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
       setState(() {
-        _profileImage = imageFile;
+        _cloudFile = mediaFile;
+        _fileBytes = _mediaData.data;
+        _imageWidget = Image.memory(_mediaData.data);
+      });
+    }
+
+    if (_cloudFile != null) {
+
+      setState(() {
+        _profileImage = _cloudFile;
       });
     }
   }
@@ -58,7 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     } else {
       // New profile image
-      return FileImage(_profileImage);
+      return _imageWidget.image;
     }
   }
 
@@ -76,10 +97,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (_profileImage == null) {
         _profileImageUrl = widget.user.profileImageUrl;
       } else {
-        _profileImageUrl = await StorageService.uploadUserProfileImage(
-          widget.user.profileImageUrl,
-          _profileImage,
-        );
+        //  = await StorageService.uploadImageToFirebaseAndShareDownloadUrl(
+        //     _m_profileImageUrlediaData
+        // );
       }
 
       UserModel user = UserModel(
