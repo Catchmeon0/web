@@ -24,17 +24,17 @@ import 'package:http/http.dart' as http;
 import 'package:web/widgets/widgets.dart';
 import 'edit_profile_screen.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreenMobile extends StatefulWidget {
   final String currentUserId;
   final String userId;
 
-  ProfileScreen({this.currentUserId, this.userId});
+  ProfileScreenMobile({@required this.currentUserId,@required this.userId});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ProfileScreenMobileState createState() => _ProfileScreenMobileState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenMobileState extends State<ProfileScreenMobile> {
   bool _isFollowing = false;
   int _followerCount = 0;
   int _followingCount = 0;
@@ -57,8 +57,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _setupProfileUser();
     _initChannel();
     loadOwnTweetJSON();
-     _isTwitterLinked = false;
-     _isYoutubeLinked = false;
+    _isTwitterLinked = false;
+    _isYoutubeLinked = false;
     _verifieYoutubeAndTwitter();
     _getCurrentUserInfo();
   }
@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _isloadingTweet = true;
     String token = "Bearer " + box.read("token");
     String userScreenName =
-        await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
+    await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
 
     var Url = "http://localhost:8080/getOwnTweetFromUser?UserScreenName=" +
         userScreenName;
@@ -92,15 +92,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         /*"Authorization": token,*/
       },
     );
-   // print(response.body.toString());
+    // print(response.body.toString());
 
     if (response.statusCode == 200) {
       String responseString = response.body;
       var parsedJson = JsonDecoder().convert(responseString);
-       var data = JsonDecoder().convert(response.body);
+      var data = JsonDecoder().convert(response.body);
       box.write("OwnTweetStatus", data);
 
-     print(box.read("OwnTweetStatus"));
+      print(box.read("OwnTweetStatus"));
 
       setState(() {
         _isloadingTweet = false;
@@ -113,10 +113,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _isLoading = true;
     dynamic _channelId = await APIService.instance
         .getlistchannelIDfromUserFollowedUsers(await DatabaseService()
-            .getUserChannelNameFromUserID(widget.userId));
+        .getUserChannelNameFromUserID(widget.userId));
     if (_channelId.isNotEmpty) {
       Channel channel =
-          await APIService.instance.fetchChannel(channelId: _channelId);
+      await APIService.instance.fetchChannel(channelId: _channelId);
       setState(() {
         if (channel != null) {
           _channel = channel;
@@ -190,46 +190,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _displayButton(UserModel user) {
     return user.id == box.read("currentUserId")
         ? Container(
-            width: 200.0,
-            child: FlatButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EditProfileScreen(
-                    user: user,
-                    updateUser: (UserModel updateUser) {
-                      // Trigger state rebuild after editing profile
-                      UserModel updatedUser = UserModel(
-                        id: updateUser.id,
-                        name: updateUser.name,
-                        email: user.email,
-                        profileImageUrl: updateUser.profileImageUrl,
-                      );
-                      setState(() => _profileUser = updatedUser);
-                    },
-                  ),
-                ),
-              ),
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text(
-                'Edit Profile',
-                style: TextStyle(fontSize: 18.0),
-              ),
+      width: 200.0,
+      child: FlatButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => EditProfileScreen(
+              user: user,
+              updateUser: (UserModel updateUser) {
+                // Trigger state rebuild after editing profile
+                UserModel updatedUser = UserModel(
+                  id: updateUser.id,
+                  name: updateUser.name,
+                  email: user.email,
+                  profileImageUrl: updateUser.profileImageUrl,
+                );
+                setState(() => _profileUser = updatedUser);
+              },
             ),
-          )
+          ),
+        ),
+        color: Colors.blue,
+        textColor: Colors.white,
+        child: Text(
+          'Edit Profile',
+          style: TextStyle(fontSize: 18.0),
+        ),
+      ),
+    )
         : Container(
-            width: 200.0,
-            child: FlatButton(
-              onPressed: _followOrUnfollow,
-              color: _isFollowing ? Colors.grey[200] : Colors.blue,
-              textColor: _isFollowing ? Colors.black : Colors.white,
-              child: Text(
-                _isFollowing ? 'Uncatch' : 'Catch',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          );
+      width: 200.0,
+      child: FlatButton(
+        onPressed: _followOrUnfollow,
+        color: _isFollowing ? Colors.grey[200] : Colors.blue,
+        textColor: _isFollowing ? Colors.black : Colors.white,
+        child: Text(
+          _isFollowing ? 'Uncatch' : 'Catch',
+          style: TextStyle(fontSize: 18.0),
+        ),
+      ),
+    );
   }
 
   _buildProfileInfo(UserModel user) {
@@ -268,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Text(
-                              'catchers',
+                              'followers',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ],
@@ -283,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Text(
-                              'catching',
+                              'following',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ],
@@ -329,27 +329,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _isTwitterLinked? Container(
 
                   child: !_isloadingTweet && !_isLoading
-                    ? EmbeddedTweetView.fromTweet(
-                  Tweet.fromJson(box.read("OwnTweetStatus")),
-                )
-                    : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
+                      ? EmbeddedTweetView.fromTweet(
+                    Tweet.fromJson(box.read("OwnTweetStatus")),
+                  )
+                      : Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
                     ),
-                  ),
-                ),) : Text("Twitter account isn't linked!"),
+                  ),) : Text("Twitter account isn't linked!"),
 
                 _isYoutubeLinked? Container(
-                child:  !_isLoading && !_isloadingTweet
-                    ? PostContainerYoutube(channel: _channel)
-                    : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
+                  child:  !_isLoading && !_isloadingTweet
+                      ? PostContainerYoutube(channel: _channel)
+                      : Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
                     ),
-                  ),
-                ),):  Text("Youtube account isn't linked!"),
+                  ),):  Text("Youtube account isn't linked!"),
 
 
               ],
@@ -383,10 +383,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: new Image.asset("assets/images/CMO_black.png")),
         centerTitle: false,
         //avatar Image
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        /*  leading: new Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      currentUserId: _user.id,
+                      userId: _user.id,
+                    )),
+              )
+            },
+            child: ProfileAvatar(
+                imageUrl: ("assets/images/user_placeholder.jpg")),
+          ),
+        ),*/
 
         actions: [
           CircleButton(
@@ -411,13 +424,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         future: usersRef.doc(widget.userId).get(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            // Uncompleted State
+          // Uncompleted State
             case ConnectionState.none:
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
               break;
             default:
-              // Completed with error
+            // Completed with error
               if (snapshot.hasError)
                 return Container(child: Text(snapshot.error.toString()));
               // Completed with data
