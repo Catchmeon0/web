@@ -11,6 +11,9 @@ import 'package:http/http.dart' as http;
 import 'package:twitter_api/twitter_api.dart';
 import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
+import 'package:web/models/UserModel.dart';
+import 'package:web/screens/login/loginForm.dart';
+import 'package:web/services/database_service.dart';
 import 'package:web/widgets/widgets.dart';
 
 import 'home_screen_tweets_desktop.dart';
@@ -31,6 +34,21 @@ class _HomeScreenTweetsState extends State<HomeScreenTweets> {
     super.dispose();
   }
 
+  UserModel _user;
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserInfo();
+  }
+
+  _getCurrentUserInfo()async{
+    UserModel user = await DatabaseService().currentUser(box.read("currentUserId"));
+
+    setState(() {
+      _user= user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return
@@ -39,7 +57,7 @@ class _HomeScreenTweetsState extends State<HomeScreenTweets> {
         child: Scaffold(
           body: Responsive(
             mobile:
-            HomeScreenTweetsnMobile(scrollController: _trackingScrollController),
+            HomeScreenTweetsnMobile(scrollController: _trackingScrollController, currentUser: _user,),
             desktop:
             HomeScreenTweetsnDesktop (scrollController: _trackingScrollController),
           ),
