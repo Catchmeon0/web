@@ -60,25 +60,11 @@ class _LoginFormState extends State<LoginForm> {
       box.write("token", token);
       box.write("username", username);
 
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext dialogContext) {
-          return MyAlertDialog(title: 'Backend Response ${box.read('token')}', content: response.body);
-        },
-      );
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => NavScreen()),
       );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Welcome $username'),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'Close',
-          onPressed: () {},
-        ),
-      ));
+
     }
   }
   UserModel userModel;

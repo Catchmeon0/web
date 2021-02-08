@@ -5,7 +5,10 @@ import 'package:tweet_ui/default_text_styles.dart';
 import 'package:tweet_ui/embedded_tweet_view.dart';
 import 'package:tweet_ui/models/api/tweet.dart';
 import 'package:web/config/palette.dart';
+import 'package:web/models/UserModel.dart';
 import 'package:web/screens/login/logscreen.dart';
+import 'package:web/screens/profil/profile_screen.dart';
+import 'package:web/screens/search/search_screen.dart';
 import 'package:web/services/database_service.dart';
 import 'package:web/widgets/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -14,8 +17,9 @@ import 'package:web/screens/login/loginForm.dart';
 
 class HomeScreenTweetsnMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
+  final UserModel currentUser;
 
-  HomeScreenTweetsnMobile({Key key, @required this.scrollController})
+  HomeScreenTweetsnMobile({Key key, @required this.scrollController,@required this.currentUser})
       : super(key: key);
 
   @override
@@ -102,34 +106,39 @@ class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
         SliverAppBar(
           brightness: Brightness.light,
           backgroundColor: Colors.white,
-          title: Text(
-            "CatchMeOn",
-            style: const TextStyle(
-              color: Palette.catchMeOn_logo_Color,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -1.2,
-            ),
-          ),
+          title: SizedBox(
+              height: 80,
+              width: 100,
+              child: new Image.asset("assets/images/CMO_black.png")),
           centerTitle: false,
           floating: true,
           //avatar Image
+          leading: new Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileScreen(
+                        currentUserId: widget.currentUser.id,
+                        userId: widget.currentUser.id,
+                      )),
+                )
+              },
+              child: ProfileAvatar(
+                  imageUrl: ("assets/images/user_placeholder.jpg")),
+            ),
+          ),
 
           actions: [
             CircleButton(
               icon: Icons.search,
               iconSize: 30.0,
-              onPressed: () => print('search'),
-            ),
-            CircleButton(
-              icon: MdiIcons.instagram,
-              iconSize: 30.0,
-              onPressed: () => print('instagram'),
-            ),
-            CircleButton(
-              icon: MdiIcons.twitter,
-              iconSize: 30.0,
-              onPressed: () => print('twitter'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchScreen()),
+              ),
             ),
             CircleButton(
               icon: MdiIcons.logout,

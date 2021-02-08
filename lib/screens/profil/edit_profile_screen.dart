@@ -124,6 +124,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
         backgroundColor: Colors.white,
         title: Text(
           'Edit Profile',
@@ -185,9 +192,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         labelText: 'Your Twitter',
                       ),
-                      validator: (input) => input.trim().length < 1
-                          ? 'Please enter a valid Twitter @'
-                          : null,
                       onSaved: (input) => _userTwitter = input,
                     ),
                     TextFormField(
@@ -200,9 +204,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         labelText: 'Your Youtube',
                       ),
-                      validator: (input) => input.trim().length < 1
-                          ? 'Please enter a valid Youtube channel name '
-                          : null,
                       onSaved: (input) => _userYoutube = input,
                     ),
                     Container(

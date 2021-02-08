@@ -2,21 +2,16 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tweet_ui/embedded_tweet_view.dart';
 import 'package:tweet_ui/models/api/tweet.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/channel_model.dart';
-import 'package:web/models/user_data.dart';
 import 'package:web/screens/login/loginForm.dart';
 import 'package:web/screens/login/logscreen.dart';
 import 'package:web/screens/search/search_screen.dart';
 import 'package:web/services/api_service.dart';
-import 'package:web/services/auth_service.dart';
 import 'package:web/services/database_service.dart';
 import 'package:web/utilities/constants.dart';
 import 'package:web/widgets/post/post_container_youtube.dart';
@@ -24,17 +19,17 @@ import 'package:http/http.dart' as http;
 import 'package:web/widgets/widgets.dart';
 import 'edit_profile_screen.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreenDesktop extends StatefulWidget {
   final String currentUserId;
   final String userId;
 
-  ProfileScreen({this.currentUserId, this.userId});
+  ProfileScreenDesktop({this.currentUserId, this.userId});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ProfileScreenDesktopState createState() => _ProfileScreenDesktopState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
   bool _isFollowing = false;
   int _followerCount = 0;
   int _followingCount = 0;
@@ -57,8 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _setupProfileUser();
     _initChannel();
     loadOwnTweetJSON();
-     _isTwitterLinked = false;
-     _isYoutubeLinked = false;
+    _isTwitterLinked = false;
+    _isYoutubeLinked = false;
     _verifieYoutubeAndTwitter();
     _getCurrentUserInfo();
   }
@@ -78,10 +73,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
   Future<dynamic> loadOwnTweetJSON() async {
+    if(_isTwitterLinked){
     _isloadingTweet = true;
     String token = "Bearer " + box.read("token");
     String userScreenName =
-        await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
+    await DatabaseService().getUserTweetScreenNameFromUserID(widget.userId);
 
     var Url = "http://localhost:8080/getOwnTweetFromUser?UserScreenName=" +
         userScreenName;
@@ -92,31 +88,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         /*"Authorization": token,*/
       },
     );
-   // print(response.body.toString());
+    // print(response.body.toString());
 
     if (response.statusCode == 200) {
       String responseString = response.body;
       var parsedJson = JsonDecoder().convert(responseString);
-       var data = JsonDecoder().convert(response.body);
+      var data = JsonDecoder().convert(response.body);
       box.write("OwnTweetStatus", data);
 
-     print(box.read("OwnTweetStatus"));
-
+      print(box.read("OwnTweetStatus"));
       setState(() {
         _isloadingTweet = false;
       });
-    }
-
+    }}
   }
 
   _initChannel() async {
     _isLoading = true;
     dynamic _channelId = await APIService.instance
         .getlistchannelIDfromUserFollowedUsers(await DatabaseService()
-            .getUserChannelNameFromUserID(widget.userId));
+        .getUserChannelNameFromUserID(widget.userId));
     if (_channelId.isNotEmpty) {
       Channel channel =
-          await APIService.instance.fetchChannel(channelId: _channelId);
+      await APIService.instance.fetchChannel(channelId: _channelId);
       setState(() {
         if (channel != null) {
           _channel = channel;
@@ -190,46 +184,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _displayButton(UserModel user) {
     return user.id == box.read("currentUserId")
         ? Container(
-            width: 200.0,
-            child: FlatButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EditProfileScreen(
-                    user: user,
-                    updateUser: (UserModel updateUser) {
-                      // Trigger state rebuild after editing profile
-                      UserModel updatedUser = UserModel(
-                        id: updateUser.id,
-                        name: updateUser.name,
-                        email: user.email,
-                        profileImageUrl: updateUser.profileImageUrl,
-                      );
-                      setState(() => _profileUser = updatedUser);
-                    },
-                  ),
-                ),
-              ),
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text(
-                'Edit Profile',
-                style: TextStyle(fontSize: 18.0),
-              ),
+      width: 200.0,
+      child: FlatButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => EditProfileScreen(
+              user: user,
+              updateUser: (UserModel updateUser) {
+                // Trigger state rebuild after editing profile
+                UserModel updatedUser = UserModel(
+                  id: updateUser.id,
+                  name: updateUser.name,
+                  email: user.email,
+                  profileImageUrl: updateUser.profileImageUrl,
+                );
+                setState(() => _profileUser = updatedUser);
+              },
             ),
-          )
+          ),
+        ),
+        color: Colors.blue,
+        textColor: Colors.white,
+        child: Text(
+          'Edit Profile',
+          style: TextStyle(fontSize: 18.0),
+        ),
+      ),
+    )
         : Container(
-            width: 200.0,
-            child: FlatButton(
-              onPressed: _followOrUnfollow,
-              color: _isFollowing ? Colors.grey[200] : Colors.blue,
-              textColor: _isFollowing ? Colors.black : Colors.white,
-              child: Text(
-                _isFollowing ? 'Uncatch' : 'Catch',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          );
+      width: 200.0,
+      child: FlatButton(
+        onPressed: _followOrUnfollow,
+        color: _isFollowing ? Colors.grey[200] : Colors.blue,
+        textColor: _isFollowing ? Colors.black : Colors.white,
+        child: Text(
+          _isFollowing ? 'Uncatch' : 'Catch',
+          style: TextStyle(fontSize: 18.0),
+        ),
+      ),
+    );
   }
 
   _buildProfileInfo(UserModel user) {
@@ -268,7 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Text(
-                              'catchers',
+                              'followers',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ],
@@ -283,7 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Text(
-                              'catching',
+                              'following',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ],
@@ -328,28 +322,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 _isTwitterLinked? Container(
 
-                  child: !_isloadingTweet && !_isLoading
-                    ? EmbeddedTweetView.fromTweet(
-                  Tweet.fromJson(box.read("OwnTweetStatus")),
-                )
-                    : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
+                  child: !_isloadingTweet
+                      ? EmbeddedTweetView.fromTweet(
+                    Tweet.fromJson(box.read("OwnTweetStatus")),
+                  )
+                      : Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
                     ),
-                  ),
-                ),) : Text("Twitter account isn't linked!"),
+                  ),) : _isYoutubeLinked ? Text(""):Text("Twitter account isn't linked!"),
 
                 _isYoutubeLinked? Container(
-                child:  !_isLoading && !_isloadingTweet
-                    ? PostContainerYoutube(channel: _channel)
-                    : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
+                  child:  !_isLoading
+                      ? PostContainerYoutube(channel: _channel)
+                      : Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
                     ),
-                  ),
-                ),):  Text("Youtube account isn't linked!"),
+                  ),):  _isTwitterLinked ? Text("") : Text("Youtube account isn't linked!"),
 
 
               ],
@@ -374,50 +368,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        title: SizedBox(
-            height: 80,
-            width: 100,
-            child: new Image.asset("assets/images/CMO_black.png")),
-        centerTitle: false,
-        //avatar Image
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-
-        actions: [
-          CircleButton(
-            icon: Icons.search,
-            iconSize: 30.0,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SearchScreen()),
-            ),
-          ),
-          CircleButton(
-            icon: MdiIcons.logout,
-            iconSize: 30.0,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AuthThreePage()),
-            ),
-          ),
-        ],
-      ),
       body: FutureBuilder(
         future: usersRef.doc(widget.userId).get(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            // Uncompleted State
+          // Uncompleted State
             case ConnectionState.none:
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
               break;
             default:
-              // Completed with error
+            // Completed with error
               if (snapshot.hasError)
                 return Container(child: Text(snapshot.error.toString()));
               // Completed with data

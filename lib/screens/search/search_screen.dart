@@ -55,13 +55,16 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.white,
         title: Container(
           child: Row(
             children: [
-              Flexible(
-               flex: 2,
+              Expanded(
+                flex: 2,
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
@@ -89,11 +92,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   },
                 ),
               ),
-              Flexible(
+              Expanded(
                 flex: 1,
                 child: DropdownButton<String>(
                   value: _platform,
-                  //icon: Icon(Icons.arrow_downward),
+                  icon: Icon(Icons.more_vert_rounded),
+                  isExpanded: true,
                   iconSize: 24,
                   elevation: 16,
                   style: TextStyle(color: Colors.grey),
@@ -112,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       value: value,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 30.0),
-                        child: Text("$value"),
+                        child: Center(child: Text("$value")),
                       ),
                     );
                   }).toList(),

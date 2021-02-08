@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:web/models/UserModel.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/widgets/widgets.dart';
 
 class UserCard extends StatelessWidget {
-  final User user;
+  final UserModel user;
 
   const UserCard({
     Key key,
@@ -13,11 +15,17 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileScreen(
+          currentUserId: user.id,
+          userId: user.id,
+        )),
+      ); },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ProfileAvatar(imageUrl: user.imageUrl),
+          ProfileAvatar(imageUrl: user.profileImageUrl.length != 0 ? user.profileImageUrl: ("assets/images/user_placeholder.jpg") ),
           const SizedBox(width: 6.0),
           Flexible(
             child: Text(
