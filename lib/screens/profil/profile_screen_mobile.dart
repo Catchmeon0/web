@@ -14,6 +14,7 @@ import 'package:web/models/channel_model.dart';
 import 'package:web/models/user_data.dart';
 import 'package:web/screens/login/loginForm.dart';
 import 'package:web/screens/login/logscreen.dart';
+import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/screens/search/search_screen.dart';
 import 'package:web/services/api_service.dart';
 import 'package:web/services/auth_service.dart';
@@ -382,8 +383,9 @@ class _ProfileScreenMobileState extends State<ProfileScreenMobile> {
             width: 100,
             child: new Image.asset("assets/images/CMO_black.png")),
         centerTitle: false,
+
         //avatar Image
-        /*  leading: new Padding(
+        leading: new Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
             onTap: () => {
@@ -399,7 +401,7 @@ class _ProfileScreenMobileState extends State<ProfileScreenMobile> {
             child: ProfileAvatar(
                 imageUrl: ("assets/images/user_placeholder.jpg")),
           ),
-        ),*/
+        ),
 
         actions: [
           CircleButton(
