@@ -84,9 +84,10 @@ class CustomAppBar extends StatelessWidget {
 
                UserCard(user: currentUser),
                 CircleButton(
-                  icon: Icons.search,
+                  icon: Icons.logout,
                   iconSize: 30.0,
-                  onPressed: () => {Navigator.push(
+                  onPressed: () => {
+                    Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AuthThreePage()),
                   )},
