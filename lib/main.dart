@@ -11,10 +11,11 @@ main() async {
 
 class MyApp extends StatelessWidget {
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CatchMeOn UI',
+      title: 'CatchMeOn',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,

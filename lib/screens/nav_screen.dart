@@ -10,9 +10,9 @@ import 'package:web/services/database_service.dart';
 import 'package:web/widgets/custom_app_bar.dart';
 import 'package:web/widgets/widgets.dart';
 
+import 'activity/activity_main_screen.dart';
 import 'homeTwetter/tweet_screen.dart';
 import 'homeYoutube/youtube_main_screen.dart';
-import 'homeYoutube/youtube_screen.dart';
 import 'login/loginForm.dart';
 
 class NavScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _NavScreenState extends State<NavScreen> {
     HomeScreen(),
     HomeScreenTweets(),
     HomeMainScreenYoutube(),
-    ActivityScreen(currentUserId: box.read("currentUserId")),
+    ActivityMainScreen(currentUserId: box.read("currentUserId")),
 
     ProfileMainScreen(
       currentUserId: box.read("currentUserId"),
