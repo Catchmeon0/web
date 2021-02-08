@@ -73,6 +73,7 @@ class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
     });
   }
   Future<dynamic> loadOwnTweetJSON() async {
+    if(_isTwitterLinked){
     _isloadingTweet = true;
     String token = "Bearer " + box.read("token");
     String userScreenName =
@@ -96,12 +97,10 @@ class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
       box.write("OwnTweetStatus", data);
 
       print(box.read("OwnTweetStatus"));
-
       setState(() {
         _isloadingTweet = false;
       });
-    }
-
+    }}
   }
 
   _initChannel() async {
@@ -323,7 +322,7 @@ class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
               children: [
                 _isTwitterLinked? Container(
 
-                  child: !_isloadingTweet && !_isLoading
+                  child: !_isloadingTweet
                       ? EmbeddedTweetView.fromTweet(
                     Tweet.fromJson(box.read("OwnTweetStatus")),
                   )
@@ -333,10 +332,10 @@ class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
                         Theme.of(context).primaryColor, // Red
                       ),
                     ),
-                  ),) : Text("Twitter account isn't linked!"),
+                  ),) : _isYoutubeLinked ? Text(""):Text("Twitter account isn't linked!"),
 
                 _isYoutubeLinked? Container(
-                  child:  !_isLoading && !_isloadingTweet
+                  child:  !_isLoading
                       ? PostContainerYoutube(channel: _channel)
                       : Center(
                     child: CircularProgressIndicator(
@@ -344,7 +343,7 @@ class _ProfileScreenDesktopState extends State<ProfileScreenDesktop> {
                         Theme.of(context).primaryColor, // Red
                       ),
                     ),
-                  ),):  Text("Youtube account isn't linked!"),
+                  ),):  _isTwitterLinked ? Text("") : Text("Youtube account isn't linked!"),
 
 
               ],
