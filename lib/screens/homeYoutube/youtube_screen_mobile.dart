@@ -133,10 +133,10 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
             CircleButton(
               icon: MdiIcons.logout,
               iconSize: 30.0,
-              onPressed: () => Navigator.push(
+              onPressed: () {box.remove("token"); Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AuthThreePage()),
-              ),
+              );},
             ),
           ],
         ),

@@ -5,6 +5,7 @@ import 'package:web/config/palette.dart';
 import 'package:web/data/data.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/login/loginForm.dart';
 import 'package:web/screens/login/logscreen.dart';
 import 'package:web/screens/profil/profile_screen.dart';
 import 'package:web/screens/search/search_screen.dart';
@@ -73,10 +74,10 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
             CircleButton(
               icon: MdiIcons.logout,
               iconSize: 30.0,
-              onPressed: () => Navigator.push(
+              onPressed: () {box.remove("token"); Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AuthThreePage()),
-              ),
+              );},
             ),
           ],
         ),

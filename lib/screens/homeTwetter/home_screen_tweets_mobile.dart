@@ -143,10 +143,10 @@ class _HomeScreenTweetsnMobileState extends State<HomeScreenTweetsnMobile> {
             CircleButton(
               icon: MdiIcons.logout,
               iconSize: 30.0,
-              onPressed: () => Navigator.push(
+              onPressed: () {box.remove("token"); Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AuthThreePage()),
-              ),
+              );},
             ),
           ],
         ),
