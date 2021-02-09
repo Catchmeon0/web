@@ -88,7 +88,7 @@ class CustomAppBar extends StatelessWidget {
                   icon: Icons.logout,
                   iconSize: 30.0,
                   onPressed: () {
-                    box.remove("token");
+                    box.erase();
                     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AuthThreePage()),
