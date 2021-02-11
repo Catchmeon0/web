@@ -35,7 +35,6 @@ class HomeScreenYoutubeMobile extends StatefulWidget {
 
 class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
   bool _isLoading;
-
   bool _dataExiste;
 
   List<dynamic> _list;
@@ -43,6 +42,7 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
   @override
   void initState() {
     super.initState();
+    box.write("YoutubeLoadPage", true);
     _isLoading = false;
     _dataExiste = false;
     _getListuserChannelYoutube();
@@ -133,10 +133,10 @@ class _HomeScreenYoutubeMobileState extends State<HomeScreenYoutubeMobile> {
             CircleButton(
               icon: MdiIcons.logout,
               iconSize: 30.0,
-              onPressed: () => Navigator.push(
+              onPressed: () {box.erase(); Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AuthThreePage()),
-              ),
+              );},
             ),
           ],
         ),

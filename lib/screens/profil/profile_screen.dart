@@ -397,14 +397,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MaterialPageRoute(builder: (context) => SearchScreen()),
             ),
           ),
-          CircleButton(
-            icon: MdiIcons.logout,
-            iconSize: 30.0,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AuthThreePage()),
+         CircleButton(
+              icon: MdiIcons.logout,
+              iconSize: 30.0,
+              onPressed: () {box.erase(); Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthThreePage()),
+              );},
             ),
-          ),
         ],
       ),
       body: FutureBuilder(

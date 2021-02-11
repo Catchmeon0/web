@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:web/config/palette.dart';
 import 'package:web/models/UserModel.dart';
 import 'package:web/models/models.dart';
+import 'package:web/screens/login/loginForm.dart';
 import 'package:web/screens/screens.dart';
 import 'package:web/screens/search/search_screen.dart';
 import 'package:web/widgets/widgets.dart';
@@ -86,11 +87,12 @@ class CustomAppBar extends StatelessWidget {
                 CircleButton(
                   icon: Icons.logout,
                   iconSize: 30.0,
-                  onPressed: () => {
+                  onPressed: () {
+                    box.erase();
                     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AuthThreePage()),
-                  )},
+                  );},
                 ),
               ],
             ),
