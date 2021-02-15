@@ -2,6 +2,13 @@
 
  CatchMeOn it's an  application who regroup different social network (for the moment only youtube and twitter are integrated) under one platform,
  it allows  users  to catch the latest contents of their favorite content creators with one click.
+
+## Screenshots
+
+Home Screen Page  | Twitter Screen Page | Profile Scree Page
+--- | --- | ---
+![home](assets/screenshots/home_screen_darius_mobile.PNG)| ![twitter](assets/screenshots/twitter_screen_darius_mobile.PNG) | ![profil](assets/screenshots/profile_screen_spacex.PNG) 
+
 ## how to run:
 
 This project is a Flutter application who is connected with Spring api:
