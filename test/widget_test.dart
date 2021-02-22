@@ -9,22 +9,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:web/main.dart';
+import 'package:web/screens/login/signupForm.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+/*  group('MainPage navigation tests', () {
+    testWidgets('tapping "Login" should pop error message when invalid log',
+        (WidgetTester tester) async{
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+          await _buildMainPage(tester);
+          await _navigateToDetailsPage(tester);
+        }
+    )
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+
+  });*/
+  /*  testWidgets('app find Text with "login" inside', (tester) async {
+    await tester.pumpWidget(new MyApp());
+    expect(find.widgetWithText(Text, "Login"), findsOneWidget);
+  });*/
+
+
 }
