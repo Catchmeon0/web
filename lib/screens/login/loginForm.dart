@@ -73,6 +73,9 @@ class _LoginFormState extends State<LoginForm> {
 
   TextEditingController passwordController = TextEditingController();
 
+  static const navigateToHomePageKey = Key("NavigateToHomePage");
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,6 +120,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const SizedBox(height: 10.0),
           RaisedButton(
+            key :  navigateToHomePageKey,
             color: Colors.blue,
             textColor: Colors.white,
             elevation: 0,

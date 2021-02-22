@@ -81,7 +81,7 @@ class _SignupFormState extends State<SignupForm> {
                 hintText: "Enter username",
                 border: OutlineInputBorder(),
               ),
-              validator: validateUsername,
+              validator:(value) =>  FieldValidator.validateUsername(value),
             ),
             const SizedBox(height: 10.0),
             TextFormField(
@@ -92,7 +92,7 @@ class _SignupFormState extends State<SignupForm> {
                 hintText: "Enter email",
                 border: OutlineInputBorder(),
               ),
-              validator: validateEmail,
+              validator: (value) => FieldValidator.validateEmail(value),
             ),
             const SizedBox(height: 10.0),
             TextFormField(
@@ -103,7 +103,7 @@ class _SignupFormState extends State<SignupForm> {
                 hintText: "Enter password",
                 border: OutlineInputBorder(),
               ),
-              validator: validatePassword,
+              validator: (value) => FieldValidator.validatePassword(value),
             ),
             const SizedBox(height: 10.0),
             TextFormField(
@@ -114,7 +114,7 @@ class _SignupFormState extends State<SignupForm> {
                 hintText: "Confirm password",
                 border: OutlineInputBorder(),
               ),
-              validator: (value) => validatePasswordConfirma(
+              validator: (value) => FieldValidator.validatePasswordConfirma(
                   value, pwdController.text, pwdControllerConfirmation.text),
             ),
             const SizedBox(height: 10.0),
@@ -195,39 +195,45 @@ class MyAlertDialog extends StatelessWidget {
   }
 }
 
-String validateUsername(String value) {
-  if (value.length < 4)
-    return 'Name must be more than 3 charater';
-  else
-    return null;
-}
 
-String validateEmail(String value) {
-  Pattern pattern =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-  RegExp regex = new RegExp(pattern);
-  if (value.isEmpty) {
-    return 'Please Enter Email';
+class  FieldValidator{
+  static String validateUsername(String value) {
+    if (value.length < 4)
+      return 'Name must be more than 3 characters';
+    else
+      return null;
   }
-  if (!regex.hasMatch(value))
-    return 'Enter Valid Email';
-  else
-    return null;
+ static String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Please Enter Email';
+    }
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+
+ static String validatePasswordConfirma(String value, String pwd, String pwdConfirm) {
+   if (value.isEmpty)
+     return 'Please confirm password';
+   else if (pwd != pwdConfirm) {
+     return 'Password do not match';
+   } else
+     return null;
+ }
+
+ static String validatePassword(String value) {
+   if (value.isEmpty)
+     return 'Please Enter password';
+   else if (value.length < 6)
+     return 'password must contain at least 6 characters';
+   return null;
+ }
+
 }
 
-String validatePasswordConfirma(String value, String pwd, String pwdConfirm) {
-  if (value.isEmpty)
-    return 'Please confirm password';
-  else if (pwd != pwdConfirm) {
-    return 'Password do not match';
-  } else
-    return null;
-}
 
-String validatePassword(String value) {
-  if (value.isEmpty)
-    return 'Please Enter password';
-  else if (value.length < 6)
-    return 'password must contain at least 6 characters';
-  return null;
-}
